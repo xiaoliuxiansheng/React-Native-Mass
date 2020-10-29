@@ -40,6 +40,7 @@ export default class EventsExample extends Component {
             }).catch((err) =>console.log(err)).finally(()=>console.log('finally'))
     }
     _log = async(event, data) =>{
+        console.log(data,"------")
         const {handleSavedefineDesti} = this.props.homeStore
        await this.DEBOUNCE(handleSavedefineDesti(data),5000)
         this.setState({
@@ -86,7 +87,7 @@ export default class EventsExample extends Component {
                     style={styles.absoluteFill}
                     locationEnabled
                     // 定位间隔(ms)
-                    locationInterval={6000}
+                    locationInterval={10000}
                     //  定位的最小更新距离
                     distanceFilter={10}
                     //
