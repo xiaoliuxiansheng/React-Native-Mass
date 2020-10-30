@@ -33,7 +33,6 @@ import {observer, inject} from 'mobx-react';
 import {Drawer as DrawerAnt, DatePicker, List, Provider} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import SplashScreen from 'react-native-splash-screen'
-import ToastExample from '../ToastExample';
 const {StatusBarManager} = NativeModules;
 
 @inject("homeStore")
@@ -233,7 +232,7 @@ export default class Home extends Component {
                             <Text style={styles.city}>{defineDestination.addressComponent.province}</Text>
                         }
                         <TouchableWithoutFeedback onPress = {()=>{
-                            ToastExample.show('Awesome', ToastExample.SHORT);
+                            NativeModules.RNManagerModule.RNActivity();
                         }}>
                             <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
                                       style={styles.message}></Ionicons>
