@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/all_black">
+
+    <ImageView
+        android:id="@+id/video_big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/icon_video_big" />
+
+    <TextView
+        android:id="@+id/tv_big_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/video_big"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:text="坐席未开启摄像头"
+        android:textColor="@color/all_white"
+        android:textSize="18sp" />
+</RelativeLayout>

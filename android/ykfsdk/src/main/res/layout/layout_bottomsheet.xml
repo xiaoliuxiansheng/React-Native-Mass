@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/all_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/color_f7f7f7">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:text="请选择您想要查询的订单"
+            android:textColor="@color/color_878787"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/iv_bottom_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:padding="10dp"
+            android:src="@drawable/icon_shop_close" />
+    </RelativeLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+
+            android:id="@+id/rv_switch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="10dp" />
+
+
+<!--    <ExpandableListView-->
+<!--        android:divider="@null"-->
+<!--        android:id="@+id/elv_logistics_more"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:childIndicator="@null"-->
+<!--        android:groupIndicator="@null" />-->
+
+</LinearLayout>

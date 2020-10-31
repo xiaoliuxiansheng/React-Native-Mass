@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_OneQuestion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/all_white">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/icon_checkmore" />
+
+    <TextView
+        android:id="@+id/tv_commonQuetion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:textColor="@color/all_black"
+        android:textSize="17sp"
+        tools:text="afdadfa" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_commonQuetion"
+        android:background="@color/color_ebebeb" />
+</RelativeLayout>

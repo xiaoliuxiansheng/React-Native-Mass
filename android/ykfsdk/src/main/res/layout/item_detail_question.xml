@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/all_white"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_detailQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="16dp"
+        android:layout_toLeftOf="@id/iv_cpmmon_problem_child"
+        android:lineSpacingExtra="5dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="20dp"
+        android:text="jhghgblkbjhblkhlkhlklkjhkjklkjlkklbkjbklblkjbklbkljblkblkbkl"
+        android:textColor="@color/color_666666"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/iv_cpmmon_problem_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/icon_cpmmon_problem_child" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_detailQuestion"
+        android:layout_marginLeft="15dp"
+        android:background="@color/color_ebebeb" />
+
+</RelativeLayout>

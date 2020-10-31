@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:layout_marginBottom="4dp">
+
+    <TextView
+        android:id="@+id/chatting_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@color/lightgrey"
+        android:textSize="10sp"
+        android:layout_margin="2dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chatting_time_tv"
+        android:layout_marginLeft="48dp"
+        >
+
+        <RelativeLayout
+            android:id="@+id/chart_to_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" >
+
+            <ImageView
+                android:id="@+id/chatting_avatar_iv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/kf_head_default_local"
+                android:scaleType="fitXY" />
+
+            <RelativeLayout
+                android:id="@+id/chatto_content_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/chatting_avatar_iv"
+                >
+
+                <!-- 文本start -->
+                <RelativeLayout
+                    android:id="@+id/chat_to_text_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/kf_chatto_bg_normal"
+                    android:maxWidth="220dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="10dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/chat_content_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:text="@string/ykf_video_publish"
+                        android:lineSpacingMultiplier="1.1"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="10dp" />
+
+                    <ImageView
+                        android:layout_toRightOf="@id/chat_content_tv"
+                        android:id="@+id/chat_to_video_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/kf_chatrow_video"/>
+                </RelativeLayout>
+                <!-- 文本end -->
+            </RelativeLayout>
+
+            <include
+                layout="@layout/ykf_read_unreadtext"
+                android:layout_marginBottom="2dp"
+                android:layout_alignBottom="@+id/chatto_content_layout"
+                android:layout_toLeftOf="@id/chatto_content_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"/>
+
+            <ImageView
+                android:id="@+id/chatting_state_iv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/kf_chat_failure_msgs"
+                android:layout_toLeftOf="@id/chatto_content_layout"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/uploading_pb"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toLeftOf="@id/chatto_content_layout"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
