@@ -7,10 +7,11 @@
  */
 import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
-import Typeone from './Typeone'
-import Typetwo from './Typetwo.js'
-import Typethree from "./Typethree";
-import Typefour from "./Typefour";
+import Typeone from './Typeone';
+import Typetwo from './Typetwo.js';
+import Typethree from './Typethree.js';
+import Typefour from './Typefour';
+
 export default class Index extends Component {
     constructor(props) {
         super(props);
@@ -37,8 +38,8 @@ export default class Index extends Component {
     }
 }
 const styles = StyleSheet.create({
-    modalBody:{
-        alignItems:'center',
-        justifyContent:'center'
+    modalBody: {
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })

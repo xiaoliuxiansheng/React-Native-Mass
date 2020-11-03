@@ -242,14 +242,14 @@ PODS:
   - react-native-amap3d (2.0.1):
     - AMap3DMap (~> 7.2.0)
     - React
-  - react-native-camera (3.40.0):
-    - React-Core
-    - react-native-camera/RCT (= 3.40.0)
-    - react-native-camera/RN (= 3.40.0)
-  - react-native-camera/RCT (3.40.0):
-    - React-Core
-  - react-native-camera/RN (3.40.0):
-    - React-Core
+  - react-native-camera (3.32.0):
+    - React
+    - react-native-camera/RCT (= 3.32.0)
+    - react-native-camera/RN (= 3.32.0)
+  - react-native-camera/RCT (3.32.0):
+    - React
+  - react-native-camera/RN (3.32.0):
+    - React
   - react-native-cameraroll (4.0.1):
     - React
   - react-native-segmented-control (2.2.0):
@@ -332,7 +332,7 @@ PODS:
     - React
   - RNScreens (2.11.0):
     - React
-  - RNVectorIcons (7.1.0):
+  - RNVectorIcons (7.0.0):
     - React
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -530,7 +530,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-amap3d: f3fba472bce0e54f6fd9dd91f474f28af465ee13
-  react-native-camera: 35854c4f764a4a6cf61c1c3525888b92f0fe4b31
+  react-native-camera: aab3472d01b1434aa4879ece2ca96e1e01315a22
   react-native-cameraroll: 60ba0068826eab1c8d43146191bafd4363ea58a7
   react-native-segmented-control: 949660ffafc2d4c13ac2bcb6024da1a816e01217
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
@@ -552,7 +552,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 0e91da98ab26d5d04c7b59a9b6bd694124caf88c
-  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
+  RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -76,7 +76,8 @@ export default class Index extends Component {
             <SafeAreaView
                 style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
             >
-                <ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator = {false}>
                     <View style={styles.container}>
                         {
                             this.state.PackageType.map((item, index) => {

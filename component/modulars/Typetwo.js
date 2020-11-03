@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { FlatList, StyleSheet, Text, View, PermissionsAndroid, Platform, Dimensions} from "react-native";
 import { MapView} from "react-native-amap3d";
-
+import AntDesign from "react-native-vector-icons/AntDesign"
+import { Toast } from "teaset"
 const deviceHeight = Dimensions.get("window").height-65;
 const deviceWidth = Dimensions.get("window").width;
 import {observer, inject} from 'mobx-react';

@@ -60,7 +60,6 @@ export default class EventsExample extends Component {
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
         ]);
     }
-
     _log(event, data) {
         this.setState({
             coordinate: {
@@ -91,14 +90,12 @@ export default class EventsExample extends Component {
     );
     // 打开弹窗
     handleOpenDrawer = (bole) => {
-        console.log(bole, "---------")
         this.setState({
             isModalVisible: bole
         })
     }
     // 地图规划 时间 秒转时分秒
     secondToDate = (result) => {
-        // console.log(result,"--------------",this.state.RouteMsg,this.props.RouteMsg)
         var h = Math.floor(result / 3600) < 10 ? '0' + Math.floor(result / 3600) : Math.floor(result / 3600);
         var m = Math.floor((result / 60 % 60)) < 10 ? '0' + Math.floor((result / 60 % 60)) : Math.floor((result / 60 % 60));
         var s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
@@ -309,6 +306,7 @@ export default class EventsExample extends Component {
                                 </View>
                                 <View style={styles.DrawerBottomContent}>
                                     <ScrollView
+                                        showsVerticalScrollIndicator = {false}
                                     >
                                         <View style={styles.planItem}>
                                             <FontAwesome5 name='walking' size={20}

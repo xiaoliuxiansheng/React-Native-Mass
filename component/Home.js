@@ -33,6 +33,7 @@ import {observer, inject} from 'mobx-react';
 import {Drawer as DrawerAnt, DatePicker, List, Provider} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import SplashScreen from 'react-native-splash-screen'
+
 const {StatusBarManager} = NativeModules;
 
 @inject("homeStore")
@@ -115,7 +116,8 @@ export default class Home extends Component {
             locationType: 1, // 1为出发类型 2为目的地
             inputText: '',
             showHeader: true, // 调用菜单抽屉时 隐藏头部导航
-            value: undefined
+            value: undefined,
+            showBar:null
         };
     }
 
@@ -176,7 +178,8 @@ export default class Home extends Component {
     // 打开位置搜索框
     handelSearchPlace = async (type) => {
         this.setState({
-            searchData: []
+            searchData: [],
+            showBar:1
         })
         if (+type === 1) {
             this.setState({
@@ -231,7 +234,7 @@ export default class Home extends Component {
                             defineDestination && defineDestination.addressComponent &&
                             <Text style={styles.city}>{defineDestination.addressComponent.province}</Text>
                         }
-                        <TouchableWithoutFeedback onPress = {()=>{
+                        <TouchableWithoutFeedback onPress={() => {
                             NativeModules.RNManagerModule.RNActivity();
                         }}>
                             <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
@@ -275,47 +278,10 @@ export default class Home extends Component {
         }
     }
     openDrawers = (bole) => {
-        let view = (
-            <View style={[styles.drawerBox]}>
-                <View style={styles.drawerBoxContent}>
-                    <FontAwesome name="user-circle" size={30} style={styles.drawerBoxIconFirst}></FontAwesome>
-                    <Text style={styles.drawerBoxTextFirst}>刘某某</Text>
-                </View>
-                <View style={{backgroundColor: 'rgba(0, 41, 84, 1.000)'}}>
-                    <View style={styles.drawerBoxContent} marginTop={10}>
-                        <Fontisto name="person" size={20} style={styles.drawerBoxIcon}></Fontisto>
-                        <Text style={styles.drawerBoxText}>个人信息</Text>
-                    </View>
-                    <View style={styles.drawerBoxContent}>
-                        <FontAwesome5 name="tasks" size={20} style={styles.drawerBoxIcon}></FontAwesome5>
-                        <Text style={styles.drawerBoxText}>我的订单</Text>
-                    </View>
-                    <View style={styles.drawerBoxContent}>
-                        <Entypo name="wallet" size={20} style={styles.drawerBoxIcon}></Entypo>
-                        <Text style={styles.drawerBoxText}>我的钱包</Text>
-                    </View>
-                    <TouchableWithoutFeedback onPress={this.handleToMonthPack}>
-                        <View style={styles.drawerBoxContent}>
-                            <FontAwesome name="envelope-square" size={20} style={styles.drawerBoxIcon}></FontAwesome>
-                            <Text style={styles.drawerBoxText}>月租套餐</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <View style={styles.drawerBoxContent}>
-                        <AntDesign name="Safety" size={20} style={styles.drawerBoxIcon}></AntDesign>
-                        <Text style={styles.drawerBoxText}>安全</Text>
-                    </View>
-                    <View style={styles.drawerBoxContent}>
-                        <Fontisto name="player-settings" size={20} style={styles.drawerBoxIcon}></Fontisto>
-                        <Text style={styles.drawerBoxText}>设置</Text>
-                    </View>
-                </View>
-            </View>
-        );
-        if (bole) {
-            this.DrawerLeft = DrawerTest.open(view, 'left');
-        } else {
-            this.DrawerLeft.close()
-        }
+        this.setState({
+            showBar:2
+        })
+        this.drawerants.openDrawer()
     }
     // 设置出行类型
     handleType = (type) => {
@@ -442,7 +408,10 @@ export default class Home extends Component {
                     </TouchableWithoutFeedback>
                 </View>
                 {
-                    <ScrollView style={styles.searchItemList}>
+                    <ScrollView
+                        style={styles.searchItemList}
+                        showsVerticalScrollIndicator = {false}
+                    >
                         {
                             this.state.searchData.map((item, index) => {
                                 return (
@@ -450,11 +419,12 @@ export default class Home extends Component {
                                         <View style={styles.searchItem} key={index}>
                                             <View style={styles.searchItemLeft}>
                                                 {
-                                                    item.isSelected && <Fontisto name='history' size={10}></Fontisto>
+                                                    item.isSelected &&
+                                                    <Fontisto name='history' size={10} color='#fff'></Fontisto>
                                                 }
                                                 {
                                                     !item.isSelected &&
-                                                    <Ionicons name='ios-location' size={10}></Ionicons>
+                                                    <Ionicons name='ios-location' size={10} color='#fff'></Ionicons>
 
                                                 }
                                             </View>
@@ -475,10 +445,46 @@ export default class Home extends Component {
                 }
             </View>
         );
+        const sidebartwo = (
+            <View style={[styles.drawerBox]}>
+                <View style={styles.drawerBoxContent}>
+                    <FontAwesome name="user-circle" size={30} style={styles.drawerBoxIconFirst}></FontAwesome>
+                    <Text style={styles.drawerBoxTextFirst}>某某某</Text>
+                </View>
+                <View style={{backgroundColor: 'rgba(0, 41, 84, 1.000)'}}>
+                    <View style={styles.drawerBoxContent} marginTop={10}>
+                        <Fontisto name="person" size={20} style={styles.drawerBoxIcon}></Fontisto>
+                        <Text style={styles.drawerBoxText}>个人信息</Text>
+                    </View>
+                    <View style={styles.drawerBoxContent}>
+                        <FontAwesome5 name="tasks" size={20} style={styles.drawerBoxIcon}></FontAwesome5>
+                        <Text style={styles.drawerBoxText}>我的订单</Text>
+                    </View>
+                    <View style={styles.drawerBoxContent}>
+                        <Entypo name="wallet" size={20} style={styles.drawerBoxIcon}></Entypo>
+                        <Text style={styles.drawerBoxText}>我的钱包</Text>
+                    </View>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack}>
+                        <View style={styles.drawerBoxContent}>
+                            <FontAwesome name="envelope-square" size={20} style={styles.drawerBoxIcon}></FontAwesome>
+                            <Text style={styles.drawerBoxText}>月租套餐</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <View style={styles.drawerBoxContent}>
+                        <AntDesign name="Safety" size={20} style={styles.drawerBoxIcon}></AntDesign>
+                        <Text style={styles.drawerBoxText}>安全</Text>
+                    </View>
+                    <View style={styles.drawerBoxContent}>
+                        <Fontisto name="player-settings" size={20} style={styles.drawerBoxIcon}></Fontisto>
+                        <Text style={styles.drawerBoxText}>设置</Text>
+                    </View>
+                </View>
+            </View>
+        )
         return (
             // 对安卓IOS刘海屏、异形屏 进行适配
             <DrawerAnt
-                sidebar={sidebar}
+                sidebar={this.state.showBar === 1 ? sidebar: sidebartwo}
                 position="enum{'left'"
                 open={false}
                 drawerRef={el => (this.drawerants = el)}
@@ -503,33 +509,43 @@ export default class Home extends Component {
                                 defineDestination && defineDestination.addressComponent &&
                                 <Text style={styles.city}>{defineDestination.addressComponent.province}</Text>
                             }
-                            <TouchableWithoutFeedback onPress = {()=>{
+                            <TouchableWithoutFeedback onPress={() => {
                                 NativeModules.RNManagerModule.RNActivity();
                             }}>
-                            <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
-                                      style={styles.message}></Ionicons>
+                                <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
+                                          style={styles.message}></Ionicons>
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.menu}>
-                            {
-                                this.state.tabType.map((item, index) => {
-                                    return (
-                                        index < 4 &&
-                                        <TouchableWithoutFeedback onPress={this.handleSetTab.bind(this, index + 1)}>
-                                            <Text
-                                                key={index}
-                                                style={[styles.scrooltab, {color: defineTab === index + 1 ? 'rgb(255, 198, 69)' : '#ECECEC'}]}>{item.name}</Text>
-                                        </TouchableWithoutFeedback>
-                                    )
-                                })
-                            }
-                            <TouchableWithoutFeedback onPress={this.handleOpenTab.bind(this, true)}>
-                                <Text style={styles.modals}>
-                                    <Entypo name='grid' size={32} color="#FFFFFF" style={styles.modals}></Entypo>
-                                </Text>
-                            </TouchableWithoutFeedback>
+                            <ScrollView
+                                horizontal={true} // 横向
+                                showsHorizontalScrollIndicator={false} >
+                                <View style={styles.menuLeft}>
+                                    {
+                                        this.state.tabType.map((item, index) => {
+                                            return (
+                                                // index < 4 &&
+                                                <TouchableWithoutFeedback onPress={this.handleSetTab.bind(this, index + 1)}>
+                                                    <Text
+                                                        key={index}
+                                                        style={[styles.scrooltab, {color: defineTab === index + 1 ? 'rgb(255, 198, 69)' : '#ECECEC'}]}>{item.name}</Text>
+                                                </TouchableWithoutFeedback>
+                                                // </ScrollView>
+                                            )
+                                        })
+                                    }
+                                </View>
+                            </ScrollView>
+                            <View style={styles.menuRight}>
+                                <TouchableWithoutFeedback onPress={this.handleOpenTab.bind(this, true)}>
+                                    <Text style={styles.modals}>
+                                        <Entypo name='grid' size={32} color="#FFFFFF" style={styles.modals}></Entypo>
+                                    </Text>
+                                </TouchableWithoutFeedback>
+                            </View>
                         </View>
-                        <AllModules selectTab={defineTab}></AllModules>
+                        {/*<AllModules selectTab={defineTab}></AllModules>*/}
+                        <AllModules selectTab={1}></AllModules>
                         <View style={[styles.InputAddress]}>
                             <View style={styles.InputAddressHead}>
                                 <TouchableWithoutFeedback onPress={this.handleType.bind(this, 1)}>
@@ -577,26 +593,26 @@ export default class Home extends Component {
                                     </View>
                                 </View>
                             }
-                            {
-                                this.state.travelType === 2 &&
-                                <Provider>
-                                    <View>
-                                        <List>
-                                            <DatePicker
-                                                value={this.state.value}
-                                                mode="datetime"
-                                                defaultDate={new Date()}
-                                                minDate={new Date()}
-                                                maxDate={new Date(2026, 11, 3)}
-                                                onChange={this.onChange}
-                                                format="YYYY-MM-DD HH:mm"
-                                            >
-                                                <List.Item arrow="horizontal">出发时间</List.Item>
-                                            </DatePicker>
-                                        </List>
-                                    </View>
-                                </Provider>
-                            }
+                            {/*{*/}
+                            {/*    this.state.travelType === 2 &&*/}
+                            {/*    <Provider>*/}
+                            {/*        <View>*/}
+                            {/*            <List>*/}
+                            {/*                <DatePicker*/}
+                            {/*                    value={this.state.value}*/}
+                            {/*                    mode="datetime"*/}
+                            {/*                    defaultDate={new Date()}*/}
+                            {/*                    minDate={new Date()}*/}
+                            {/*                    maxDate={new Date(2026, 11, 3)}*/}
+                            {/*                    onChange={this.onChange}*/}
+                            {/*                    format="YYYY-MM-DD HH:mm"*/}
+                            {/*                >*/}
+                            {/*                    <List.Item arrow="horizontal">出发时间</List.Item>*/}
+                            {/*                </DatePicker>*/}
+                            {/*            </List>*/}
+                            {/*        </View>*/}
+                            {/*    </Provider>*/}
+                            {/*}*/}
                         </View>
                     </View>
                 </SafeAreaView>
@@ -635,18 +651,27 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 41, 84, 1.000)',
         height: 35
     },
-    scrooltab: {
-        flex: 1,
-        textAlign: 'center',
-        lineHeight: 28,
-        fontSize: 12
+    menuLeft:{
+        flex:5,
+        flexDirection: 'row'
     },
+    // menuRight:{
+    //     flex:1
+    // },
     modals: {
-        flex: .5,
+        flex: .9,
         textAlign: 'center',
         paddingTop: 0,
         marginTop: 0,
         lineHeight: 30
+    },
+    scrooltab: {
+        // flex: 1,
+        textAlign: 'center',
+        marginRight:15,
+        marginLeft:15,
+        lineHeight: 28,
+        fontSize: 12
     },
     drawerBox: {
         flex: 1,
@@ -810,15 +835,14 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(211,234,254,1.000)'
     },
     searchplace: {
-        // paddingTop: 100,
+        flex:1,
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: 'rgba(0, 41, 84, 1.000)',
-        // flexDirection: 'row',
-        height:Dimensions.get('window').height
+        paddingBottom:0
     },
     searchviewTitle: {
-        paddingTop:30,
+        paddingTop: 30,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -840,7 +864,8 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         height: 35,
         lineHeight: 35,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: '#fff'
     },
     searchItem: {
         flexDirection: 'row',
@@ -854,8 +879,8 @@ const styles = StyleSheet.create({
     },
     searchItemList: {
         marginTop: 20,
-        marginBottom: 30,
-        backgroundColor:'rgba(0, 41, 84, 1.000)'
+        paddingBottom: 30,
+        backgroundColor: 'rgba(0, 41, 84, 1.000)'
     },
     searchItemLeft: {
         flex: 1,
@@ -867,8 +892,11 @@ const styles = StyleSheet.create({
     },
     searchItemaddress: {
         paddingTop: 5,
-        color: '#444',
+        color: '#fff',
         fontSize: 12,
+    },
+    searchItemname: {
+        color: '#fff'
     },
     drawerBoxTitleText: {
         color: '#FFFFFF',

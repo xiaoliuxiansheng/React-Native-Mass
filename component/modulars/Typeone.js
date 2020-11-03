@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FlatList, StyleSheet, Text, View, PermissionsAndroid, Platform, Dimensions} from "react-native";
+import { Toast ,Provider} from "@ant-design/react-native"
 import { MapView} from "react-native-amap3d";
-
 const deviceHeight = Dimensions.get("window").height-65;
 const deviceWidth = Dimensions.get("window").width;
 import {observer, inject} from 'mobx-react';
@@ -41,24 +41,28 @@ export default class EventsExample extends Component {
     }
     _log = async(event, data) =>{
         console.log(data,"------")
-        const {handleSavedefineDesti} = this.props.homeStore
-       await this.DEBOUNCE(handleSavedefineDesti(data),5000)
-        this.setState({
-            coordinate:{
-                latitude:data.latitude,
-                longitude:data.longitude
-            },
-            logs: [
-                {
-                    key: Date.now().toString(),
-                    time: new Date().toLocaleString(),
-                    event,
-                    data: JSON.stringify(data, null, 2)
+        if (data.latitude > 0 && data.longitude > 0) {
+            const {handleSavedefineDesti} = this.props.homeStore
+            await this.DEBOUNCE(handleSavedefineDesti(data),5000)
+            this.setState({
+                coordinate:{
+                    latitude:data.latitude,
+                    longitude:data.longitude
                 },
-                ...this.state.logs
-            ]
-        });
-        this.forceUpdate()
+                logs: [
+                    {
+                        key: Date.now().toString(),
+                        time: new Date().toLocaleString(),
+                        event,
+                        data: JSON.stringify(data, null, 2)
+                    },
+                    ...this.state.logs
+                ]
+            });
+        } else {
+            Toast.loading('正在获取当前位置', 1);
+        }
+
     }
     // 输入地址搜索时 防抖
     DEBOUNCE = (fn, wait) => {
@@ -83,27 +87,29 @@ export default class EventsExample extends Component {
         const {coordinate} = this.state
         return (
             <View>
-                <MapView
-                    style={styles.absoluteFill}
-                    locationEnabled
-                    // 定位间隔(ms)
-                    locationInterval={10000}
-                    //  定位的最小更新距离
-                    distanceFilter={10}
-                    //
-                    showsTraffic = {true}
-                    zoomLevel = {14}
-                    onLocation={this._logLocationEvent}
-                    // 设置地图中心 这个地图插件有时候设置center可以 有时候设置coordinate可以
-                    center={{
-                        latitude: coordinate.latitude,
-                        longitude: coordinate.longitude,
-                    }}
-                    coordinate={{
-                        latitude: coordinate.latitude,
-                        longitude: coordinate.longitude,
-                    }}
-                />
+                <Provider>
+                    <MapView
+                        style={styles.absoluteFill}
+                        locationEnabled
+                        // 定位间隔(ms)
+                        locationInterval={10000}
+                        //  定位的最小更新距离
+                        distanceFilter={10}
+                        //
+                        showsTraffic = {true}
+                        zoomLevel = {14}
+                        onLocation={this._logLocationEvent}
+                        // 设置地图中心 这个地图插件有时候设置center可以 有时候设置coordinate可以
+                        center={{
+                            latitude: coordinate.latitude,
+                            longitude: coordinate.longitude,
+                        }}
+                        coordinate={{
+                            latitude: coordinate.latitude,
+                            longitude: coordinate.longitude,
+                        }}
+                    />
+                </Provider>
             </View>
         );
     }

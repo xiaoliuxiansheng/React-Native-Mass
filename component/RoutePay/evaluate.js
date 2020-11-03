@@ -15,6 +15,7 @@ import {
 } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import {Actions} from "react-native-router-flux";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -26,6 +27,7 @@ export default class evaluate extends Component {
             startNum: 5, // 评分
             CheckResult: [],
             proposal: null,
+            isanonymous:false
         };
     }
 
@@ -44,7 +46,10 @@ export default class evaluate extends Component {
             })
         }
     }
-
+// 提交评论退出
+    handlePushMsg = () => {
+        Actions.push('launch')
+    }
     render() {
         let statusBarHeight;
         if (Platform.OS === "ios") {
@@ -59,7 +64,8 @@ export default class evaluate extends Component {
             <SafeAreaView
                 style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
             >
-                <ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator = {false}>
                     <View style={styles.Evaluate}>
                         <View style={styles.EvaluateHead}>
                             <View style={styles.EvaluateHeadCircle}>
@@ -125,13 +131,23 @@ export default class evaluate extends Component {
                             />
                         </View>
                         <View style={styles.EvaluateBottom}>
-                            <View style={styles.EvaluateBottomBtn}>
-                                <Text style={styles.EvaluateBottomBtnText}>提交评价</Text>
-                            </View>
-                            <View style={styles.EvaluateBottomMsg}>
-                                <View style={styles.EvaluateBottomMsgCheck}>
-                                    <AntDesign name='check' size={14} color='#fff'></AntDesign>
+                            <TouchableWithoutFeedback onPress = {this.handlePushMsg}>
+                                <View style={styles.EvaluateBottomBtn}>
+                                    <Text style={styles.EvaluateBottomBtnText}>提交评价</Text>
                                 </View>
+                            </TouchableWithoutFeedback>
+                            <View style={styles.EvaluateBottomMsg}>
+                                <TouchableWithoutFeedback onPress={() => {
+                                    this.setState({
+                                        isanonymous:!this.state.isanonymous
+                                    })
+                                }}>
+                                    <View style={[styles.EvaluateBottomMsgCheck,{backgroundColor:this.state.isanonymous? 'rgba(0, 157, 250, 1.000)':'rgba(67, 83, 104, 1.000)'}]}>
+                                        {
+                                            this.state.isanonymous && <AntDesign name='check' size={14} color='#fff'></AntDesign>
+                                        }
+                                    </View>
+                                </TouchableWithoutFeedback>
                                 <Text style={styles.EvaluateBottomMsgText}>匿名评价</Text>
                             </View>
                         </View>

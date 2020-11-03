@@ -99,7 +99,7 @@ public class RnActivity extends AppCompatActivity implements View.OnClickListene
 //        helper.setChatActivityEmoji(true);
 
 
-        helper.initSdkChat("7a6926e0-181a-11eb-b15d-054468910f6c", "测试xxx", "88888");
+        helper.initSdkChat("7a6926e0-181a-11eb-b15d-054468910f6c", "android用户", "88888");
     }
 
     /**

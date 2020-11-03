@@ -24,7 +24,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Modal from 'react-native-modal';
 import {inject, observer} from "mobx-react";
 import {Actions} from "react-native-router-flux";
-
+import { Toast, Provider, portal} from "@ant-design/react-native"
 const {StatusBarManager} = NativeModules;
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -70,123 +70,126 @@ export default class index extends Component {
                     translucent={true}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。 
 
                     barStyle={'light-content'}/>
-                <View style={styles.Content}>
-                    <View style={styles.Header}>
-                        <View style={styles.HeaderBox}>
-                            <View style={styles.HeaderLeft}>
-                                <View style={styles.HeaderLeftOne}></View>
-                                <View style={styles.HeaderLeftTwo}></View>
-                                <View style={styles.HeaderLeftThree}>
-                                    <Ionicons name='md-location-sharp' color='rgba(224, 195, 48, 1.000)'
-                                              size={12}></Ionicons>
+                    <Provider>
+                        <View style={styles.Content}>
+                            <View style={styles.Header}>
+                                <View style={styles.HeaderBox}>
+                                    <View style={styles.HeaderLeft}>
+                                        <View style={styles.HeaderLeftOne}></View>
+                                        <View style={styles.HeaderLeftTwo}></View>
+                                        <View style={styles.HeaderLeftThree}>
+                                            <Ionicons name='md-location-sharp' color='rgba(224, 195, 48, 1.000)'
+                                                      size={12}></Ionicons>
+                                        </View>
+                                    </View>
+                                    <View style={styles.HeaderCenter}>
+                                        <Text
+                                            style={styles.HeaderCenterStart}>{departure}</Text>
+                                        <View style={styles.HeaderCenterMiddle}></View>
+                                        <Text
+                                            style={styles.HeaderCenterEnd}>{destination}</Text>
+                                    </View>
+                                    <View style={styles.HeaderRight}>
+                                        <Image source={require('../../images/Transfer.png')}></Image>
+                                    </View>
+                                </View>
+                                <View style={styles.HeaderBtn}>
+                                    <FontAwesome5 name='location-arrow' color='#fff' size={22}></FontAwesome5>
                                 </View>
                             </View>
-                            <View style={styles.HeaderCenter}>
-                                <Text
-                                    style={styles.HeaderCenterStart}>{departure}</Text>
-                                <View style={styles.HeaderCenterMiddle}></View>
-                                <Text
-                                    style={styles.HeaderCenterEnd}>{destination}</Text>
+                            <View style={styles.Times}>
+                                <Ionicons name='time-sharp' size={14} color='rgba(0, 152, 110, 1.000)'></Ionicons>
+                                <Text style={styles.TimesText}>{this.state.NowTime}出发</Text>
+                                <AntDesign name="down" color="#FFFFFF" size={14}></AntDesign>
                             </View>
-                            <View style={styles.HeaderRight}>
-                                <Image source={require('../../images/Transfer.png')}></Image>
-                            </View>
-                        </View>
-                        <View style={styles.HeaderBtn}>
-                            <FontAwesome5 name='location-arrow' color='#fff' size={22}></FontAwesome5>
-                        </View>
-                    </View>
-                    <View style={styles.Times}>
-                        <Ionicons name='time-sharp' size={14} color='rgba(0, 152, 110, 1.000)'></Ionicons>
-                        <Text style={styles.TimesText}>{this.state.NowTime}出发</Text>
-                        <AntDesign name="down" color="#FFFFFF" size={14}></AntDesign>
-                    </View>
-                    <ScrollView>
-                        <View style={styles.PointList}>
-                            {
-                                this.state.RouteMsg.length > 0 ? (
-                                    this.state.RouteMsg.map((item, index) => {
-                                        return (
-                                            <TouchableWithoutFeedback
-                                                onPress={this.handleSelectItem.bind(this, true, index)}>
-                                                <View style={styles.PointListItem}>
-                                                    <View style={styles.PointListItemLeft}>
-                                                        <View style={styles.PointListItemTop}>
-                                                            <Text
-                                                                style={styles.PointListItemTopText}>{this.secondToDate(item.duration)}</Text>
-                                                            <FontAwesome5 name='walking' size={20}
-                                                                          color='rgba(81, 81, 81, 1.000)'
-                                                                          style={styles.PointListItemTopIcon}></FontAwesome5>
-                                                            <Text
-                                                                style={styles.PointListItemTopText}>{item.walking_distance}米</Text>
-                                                        </View>
-                                                        <View style={styles.PointListItemCenter}>
-                                                            {
-                                                                item.segments.map((step, stepindex) => {
-                                                                    return (
-                                                                        stepindex < 5 && <View style={styles.PointListItemCenterBox} key = {stepindex}>
-                                                                            <View
-                                                                                style={styles.PointListItemCenterBoxStep}>
-                                                                                {
-                                                                                    step.bus.buslines.length>0 ?
-                                                                                        <Text
-                                                                                            style={styles.PointListItemCenterText}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text>:<Text
-                                                                                        style={styles.PointListItemCenterText}>步行</Text>
-                                                                                }
-                                                                            </View>
-                                                                            {
-                                                                                item.segments.length > stepindex + 1 &&
-                                                                                <AntDesign name='caretright' size={10}
-                                                                                           color='rgba(232, 227, 228, 1.000)'
-                                                                                           style={styles.PointListItemCenterIcon}></AntDesign>
-                                                                            }
-                                                                        </View>
-                                                                    )
-                                                                })
-                                                            }
-                                                        </View>
-                                                        <View style={styles.PointListItemEnd}>
-                                                            <Text
-                                                                style={styles.PointListItemEndText}>{this.handleCountBusline(item)}站 {item.cost}元</Text>
-                                                            <View style={styles.PointListItemEndIcon}></View>
-                                                            {
-                                                                item.segments[0].bus&&item.segments[0].bus.buslines[0]&&<Text
-                                                                    style={styles.PointListItemEndText}>{item.segments[0].bus.buslines[0].departure_stop.name}站上车</Text>
-                                                            }
-                                                        </View>
-                                                        {
-                                                            index === 0 &&
-                                                            <View style={styles.PointListItemIsrecommend}>
-                                                                <Text
-                                                                    style={styles.PointListItemIsrecommendText}>推荐路线</Text>
+                            <ScrollView
+                                showsVerticalScrollIndicator = {false}>
+                                <View style={styles.PointList}>
+                                    {
+                                        this.state.RouteMsg.length > 0 ? (
+                                            this.state.RouteMsg.map((item, index) => {
+                                                return (
+                                                    <TouchableWithoutFeedback
+                                                        onPress={this.handleSelectItem.bind(this, true, index)}>
+                                                        <View style={styles.PointListItem}>
+                                                            <View style={styles.PointListItemLeft}>
+                                                                <View style={styles.PointListItemTop}>
+                                                                    <Text
+                                                                        style={styles.PointListItemTopText}>{this.secondToDate(item.duration)}</Text>
+                                                                    <FontAwesome5 name='walking' size={20}
+                                                                                  color='rgba(81, 81, 81, 1.000)'
+                                                                                  style={styles.PointListItemTopIcon}></FontAwesome5>
+                                                                    <Text
+                                                                        style={styles.PointListItemTopText}>{item.walking_distance}米</Text>
+                                                                </View>
+                                                                <View style={styles.PointListItemCenter}>
+                                                                    {
+                                                                        item.segments.map((step, stepindex) => {
+                                                                            return (
+                                                                                stepindex < 5 && <View style={styles.PointListItemCenterBox} key = {stepindex}>
+                                                                                    <View
+                                                                                        style={styles.PointListItemCenterBoxStep}>
+                                                                                        {
+                                                                                            step.bus.buslines.length>0 ?
+                                                                                                <Text
+                                                                                                    style={styles.PointListItemCenterText}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text>:<Text
+                                                                                                    style={styles.PointListItemCenterText}>步行</Text>
+                                                                                        }
+                                                                                    </View>
+                                                                                    {
+                                                                                        item.segments.length > stepindex + 1 &&
+                                                                                        <AntDesign name='caretright' size={10}
+                                                                                                   color='rgba(232, 227, 228, 1.000)'
+                                                                                                   style={styles.PointListItemCenterIcon}></AntDesign>
+                                                                                    }
+                                                                                </View>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </View>
+                                                                <View style={styles.PointListItemEnd}>
+                                                                    <Text
+                                                                        style={styles.PointListItemEndText}>{this.handleCountBusline(item)}站 {item.cost}元</Text>
+                                                                    <View style={styles.PointListItemEndIcon}></View>
+                                                                    {
+                                                                        item.segments[0].bus&&item.segments[0].bus.buslines[0]&&<Text
+                                                                            style={styles.PointListItemEndText}>{item.segments[0].bus.buslines[0].departure_stop.name}站上车</Text>
+                                                                    }
+                                                                </View>
+                                                                {
+                                                                    index === 0 &&
+                                                                    <View style={styles.PointListItemIsrecommend}>
+                                                                        <Text
+                                                                            style={styles.PointListItemIsrecommendText}>推荐路线</Text>
+                                                                    </View>
+                                                                }
                                                             </View>
-                                                        }
-                                                    </View>
-                                                    <View style={styles.PointListItemRight}>
-                                                        <AntDesign name='right' size={24} color='#bbb'></AntDesign>
-                                                    </View>
-                                                </View>
-                                            </TouchableWithoutFeedback>
-                                        )
-                                    })
-                                ) : null
-                            }
+                                                            <View style={styles.PointListItemRight}>
+                                                                <AntDesign name='right' size={24} color='#bbb'></AntDesign>
+                                                            </View>
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                )
+                                            })
+                                        ) : null
+                                    }
+                                </View>
+                            </ScrollView>
+                            <Modal isVisible={this.state.isModalVisible} swipeDirection='down' style={styles.DrawerBottom}>
+                                <View style={styles.DrawerBottomBox}>
+                                    <TouchableWithoutFeedback onPress={this.handleSelectItem.bind(this, false)}>
+                                        <AntDesign name='close' size={22}></AntDesign>
+                                    </TouchableWithoutFeedback>
+                                    <Text style={styles.DrawerBottomText}>是否确认进入行程</Text>
+                                    <View style={styles.DrawerBottomBtn}>
+                                        <TouchableWithoutFeedback onPress={this.handleToNavigation}>
+                                            <Text style={styles.DrawerBottomBtnText}>确定</Text>
+                                        </TouchableWithoutFeedback>
+                                    </View>
+                                </View>
+                            </Modal>
                         </View>
-                    </ScrollView>
-                    <Modal isVisible={this.state.isModalVisible} swipeDirection='down' style={styles.DrawerBottom}>
-                        <View style={styles.DrawerBottomBox}>
-                            <TouchableWithoutFeedback onPress={this.handleSelectItem.bind(this, false)}>
-                                <AntDesign name='close' size={22}></AntDesign>
-                            </TouchableWithoutFeedback>
-                            <Text style={styles.DrawerBottomText}>是否确认进入行程</Text>
-                            <View style={styles.DrawerBottomBtn}>
-                                <TouchableWithoutFeedback onPress={this.handleToNavigation}>
-                                    <Text style={styles.DrawerBottomBtnText}>确定</Text>
-                                </TouchableWithoutFeedback>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
+                    </Provider>
             </SafeAreaView>
         )
     }
@@ -279,6 +282,7 @@ export default class index extends Component {
     }
     // 获取路径交通规划
     getDirections = async () => {
+        const key = Toast.loading('正在计算路径规划', 0);
         const {departureLocation, destinationLocation, amapkey, defineDestination} = this.props.homeStore
         let one = departureLocation.split(',')
         let two = destinationLocation.split(',')
@@ -294,7 +298,9 @@ export default class index extends Component {
                 this.setState({
                     RouteMsg:json.route.transits||[]
                 })
+                portal.remove(key);
             }).catch((err) =>console.log(err)).finally(()=>console.log('finally'))
+
     }
 
 }

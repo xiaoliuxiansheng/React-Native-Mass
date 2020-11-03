@@ -8,11 +8,12 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "bundle-ios":"node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js  --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
+    "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js  --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
     "bundle-android": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform android --dev false --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
-    "@ant-design/react-native": "^4.0.1",
+    "@ant-design/icons-react-native": "^2.2.1",
+    "@ant-design/react-native": "^4.0.5",
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@react-native-community/async-storage": "^1.11.0",
@@ -47,12 +48,12 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "babel-preset-react-native": "^5",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "eslint": "^7.10.0",
     "jest": "^26.4.2",
     "metro-react-native-babel-preset": "^0.63.0",
-    "react-test-renderer": "16.13.1",
-    "babel-preset-react-native": "^5"
+    "react-test-renderer": "16.13.1"
   },
   "jest": {
     "preset": "react-native"
