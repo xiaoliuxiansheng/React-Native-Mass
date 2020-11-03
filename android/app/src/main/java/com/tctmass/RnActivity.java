@@ -37,8 +37,7 @@ public class RnActivity extends AppCompatActivity implements View.OnClickListene
 
         findViewById(R.id.button).setOnClickListener(this);
         findViewById(R.id.setting).setOnClickListener(this);
-
-        initSdk();
+        findViewById(R.id.back).setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +48,8 @@ public class RnActivity extends AppCompatActivity implements View.OnClickListene
         }else if(v.getId()== R.id.setting){
             //获取未读消息数示例
             getUnReadCount();
+        } else if (v.getId() == R.id.back) {
+            this.finish();
         }
 
     }

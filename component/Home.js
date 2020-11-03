@@ -503,8 +503,12 @@ export default class Home extends Component {
                                 defineDestination && defineDestination.addressComponent &&
                                 <Text style={styles.city}>{defineDestination.addressComponent.province}</Text>
                             }
+                            <TouchableWithoutFeedback onPress = {()=>{
+                                NativeModules.RNManagerModule.RNActivity();
+                            }}>
                             <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
                                       style={styles.message}></Ionicons>
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.menu}>
                             {
@@ -806,15 +810,19 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(211,234,254,1.000)'
     },
     searchplace: {
-        marginTop: 50,
+        // paddingTop: 100,
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        backgroundColor: 'rgba(0, 41, 84, 1.000)',
+        // flexDirection: 'row',
+        height:Dimensions.get('window').height
     },
     searchviewTitle: {
+        paddingTop:30,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 35
+        height: 65
     },
     searchviewsearch: {
         textAlign: 'left',
@@ -840,13 +848,14 @@ const styles = StyleSheet.create({
         minHeight: 50,
         alignItems: 'center',
         borderBottomWidth: 1,
-        borderColor: '#eee',
+        borderColor: 'rgba(0, 41, 84, 1.000)',
         paddingTop: 5,
         paddingBottom: 5
     },
     searchItemList: {
         marginTop: 20,
-        marginBottom: 30
+        marginBottom: 30,
+        backgroundColor:'rgba(0, 41, 84, 1.000)'
     },
     searchItemLeft: {
         flex: 1,

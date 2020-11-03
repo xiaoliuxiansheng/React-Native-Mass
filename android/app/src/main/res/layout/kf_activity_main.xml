@@ -8,11 +8,20 @@
         android:id="@+id/elv_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:groupIndicator="@null" />
+        android:groupIndicator="@null" >
+    </ExpandableListView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp">
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/icon_back" />
 
         <TextView
             android:id="@+id/setting"
