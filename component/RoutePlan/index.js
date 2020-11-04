@@ -181,11 +181,11 @@ export default class index extends Component {
                                         <AntDesign name='close' size={22}></AntDesign>
                                     </TouchableWithoutFeedback>
                                     <Text style={styles.DrawerBottomText}>是否确认进入行程</Text>
+                                    <TouchableWithoutFeedback onPress={this.handleToNavigation}>
                                     <View style={styles.DrawerBottomBtn}>
-                                        <TouchableWithoutFeedback onPress={this.handleToNavigation}>
                                             <Text style={styles.DrawerBottomBtnText}>确定</Text>
-                                        </TouchableWithoutFeedback>
                                     </View>
+                                    </TouchableWithoutFeedback>
                                 </View>
                             </Modal>
                         </View>
@@ -250,13 +250,21 @@ export default class index extends Component {
                 })
             }
             if (item.bus && item.bus.buslines && item.bus.buslines.length>0) {
-                item.bus.buslines.forEach((step) => {
-                    let stepary = step.polyline.split(';')
+                if (item.bus.buslines[0].type === '普通公交线路') {
+                    let stepary = item.bus.buslines[0].polyline.split(';')
                     stepary.forEach((xx) => {
                         let xxarr = xx.split(',')
                         Polyline = [...Polyline,{latitude:Number(xxarr[1]),longitude:Number(xxarr[0])}]
                     })
-                })
+                } else {
+                    item.bus.buslines.forEach((step) => {
+                        let stepary = step.polyline.split(';')
+                        stepary.forEach((xx) => {
+                            let xxarr = xx.split(',')
+                            Polyline = [...Polyline,{latitude:Number(xxarr[1]),longitude:Number(xxarr[0])}]
+                        })
+                    })
+                }
             }
         })
         this.setState({
@@ -294,7 +302,6 @@ export default class index extends Component {
             body:''
         }).then((response) => response.json())
             .then((json) =>{
-                console.log(json,`https://restapi.amap.com/v3/direction/transit/integrated?key=${amapkey}&origin=${one[0]},${one[1]}&destination=${two[0]},${two[1]}&city=${defineDestination.addressComponent.province}&strategy=0&nightflag=0`)
                 this.setState({
                     RouteMsg:json.route.transits||[]
                 })
@@ -417,7 +424,7 @@ const styles = StyleSheet.create({
     },
     PointListItemCenter: {
         flexDirection: 'row',
-        marginTop: deviceWidth * 0.025,
+        marginTop: deviceWidth * 0.019,
         flexWrap: 'wrap'
     },
     PointListItemCenterBox: {
@@ -433,6 +440,7 @@ const styles = StyleSheet.create({
         borderRadius: deviceWidth * 0.05,
         paddingTop: deviceWidth * 0.006,
         paddingRight: deviceWidth * 0.02,
+        marginTop:deviceWidth * 0.006,
         paddingBottom: deviceWidth * 0.006,
         paddingLeft: deviceWidth * 0.02,
         backgroundColor: 'rgba(0, 131, 143, 1.000)'

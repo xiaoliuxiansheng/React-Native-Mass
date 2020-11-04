@@ -14,7 +14,7 @@ import {
     Platform,
     Dimensions,
     StatusBar,
-    NativeModules, SafeAreaView, TouchableWithoutFeedback, ScrollView, TouchableOpacity
+    NativeModules, SafeAreaView, TouchableWithoutFeedback, ScrollView
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -132,7 +132,7 @@ export default class EventsExample extends Component {
         }
         return (
             <SafeAreaView
-                style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
+                style={[{ flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
             >
                 <StatusBar
                     animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden 
@@ -481,6 +481,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     absoluteFill: {
+        // flex:1,
         height: deviceHeight,
         width: deviceWidth
     },

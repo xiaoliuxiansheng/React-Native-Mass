@@ -160,7 +160,8 @@ export default class evaluate extends Component {
 const styles = StyleSheet.create({
     Evaluate: {
         marginTop: 50,
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingBottom:30
     },
     EvaluateHead: {
         width: deviceWidth * 0.7,
@@ -185,14 +186,14 @@ const styles = StyleSheet.create({
     },
     EvaluateStart: {
         width: deviceWidth,
-        paddingTop: 60,
+        paddingTop: 30,
         paddingLeft: deviceWidth * 0.2,
         paddingRight: deviceWidth * 0.2,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     EvaluateStartText: {
-        marginTop: 25,
+        marginTop: 15,
         textAlign: 'center'
     },
     EvaluateStartTexts: {
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     EvaluateCheck: {
-        marginTop: 60,
+        marginTop: 30,
         flexDirection: 'row',
         // 设置换行的方式
         flexWrap: 'wrap',
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     EvaluateInput: {
-        marginTop: 60
+        marginTop: 30
     },
     EvaluateInputBox: {
         width: deviceWidth * 0.6,

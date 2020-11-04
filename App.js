@@ -136,11 +136,9 @@ const Example = () => (
                     backButtonTintColor = '#fff'
                     titleStyle = {{color:'#fff'}}
                     duration={0}
-                    sceneStyle={styles.scene}
                     navTransparent>
                   <Scene
                       key="route_plan_detail"
-                      sceneStyle={styles.scene}
                       component={RoutePlanDetail}
                   />
                 </Stack>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FlatList, StyleSheet, Text, View, PermissionsAndroid, Platform, Dimensions} from "react-native";
 import { Toast ,Provider} from "@ant-design/react-native"
-import { MapView} from "react-native-amap3d";
+import { MapView } from "react-native-amap3d";
 const deviceHeight = Dimensions.get("window").height-65;
 const deviceWidth = Dimensions.get("window").width;
 import {observer, inject} from 'mobx-react';
@@ -15,7 +15,8 @@ export default class EventsExample extends Component {
             coordinate: {
                 latitude: 39.91095,
                 longitude: 116.37296
-            }
+            },
+            mapType: "standard"
         }
     }
     async componentDidMount() {
@@ -40,7 +41,6 @@ export default class EventsExample extends Component {
             }).catch((err) =>console.log(err)).finally(()=>console.log('finally'))
     }
     _log = async(event, data) =>{
-        console.log(data,"------")
         if (data.latitude > 0 && data.longitude > 0) {
             const {handleSavedefineDesti} = this.props.homeStore
             await this.DEBOUNCE(handleSavedefineDesti(data),5000)

@@ -489,7 +489,7 @@ export default class Home extends Component {
                 open={false}
                 drawerRef={el => (this.drawerants = el)}
                 drawerBackgroundColor="#fff"
-                drawerWidth={Dimensions.get('window').width / 5 * 4}
+                drawerWidth={this.state.showBar === 1 ?Dimensions.get('window').width / 5 * 4 :Dimensions.get('window').width / 5 * 3}
             >
                 <SafeAreaView
                     style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
@@ -879,7 +879,7 @@ const styles = StyleSheet.create({
     },
     searchItemList: {
         marginTop: 20,
-        paddingBottom: 30,
+        paddingBottom: 50,
         backgroundColor: 'rgba(0, 41, 84, 1.000)'
     },
     searchItemLeft: {
