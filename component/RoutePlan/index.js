@@ -305,6 +305,7 @@ export default class index extends Component {
                 this.setState({
                     RouteMsg:json.route.transits||[]
                 })
+                console.log(json)
                 portal.remove(key);
             }).catch((err) =>console.log(err)).finally(()=>console.log('finally'))
 

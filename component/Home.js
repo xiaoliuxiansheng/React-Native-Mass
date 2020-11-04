@@ -123,7 +123,6 @@ export default class Home extends Component {
 
     async componentDidMount() {
         SplashScreen.hide()
-        // this.handelGetamapData()
     }
 
     handleSetTab = (index) => {
@@ -137,9 +136,6 @@ export default class Home extends Component {
     }
     // 跳转至套餐页面
     handleToMonthPack = () => {
-        if (this.DrawerLeft) {
-            this.DrawerLeft.close()
-        }
         Actions.push('monthpackage')
     }
     // 取消搜索地址框

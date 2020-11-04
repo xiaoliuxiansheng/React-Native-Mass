@@ -14,7 +14,7 @@ import {
     Platform,
     Dimensions,
     StatusBar,
-    NativeModules, SafeAreaView, TouchableWithoutFeedback, ScrollView
+    NativeModules, SafeAreaView, TouchableWithoutFeedback, ScrollView, Animated, Easing
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -47,7 +47,10 @@ export default class EventsExample extends Component {
             latitude: 39.91095,
             longitude: 116.37296
         }],
-        RouteMsg: {}
+        RouteMsg: {},
+        offset: new Animated.Value(0),
+        opacitys: new Animated.Value(0),
+        show: false
     };
 
     async componentWillMount() {
@@ -55,11 +58,13 @@ export default class EventsExample extends Component {
             lines: [...this.props.Polyline],
             RouteMsg: this.props.RouteMsg
         })
+        console.log(this.props.RouteMsg)
         await PermissionsAndroid.requestMultiple([
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
         ]);
     }
+
     _log(event, data) {
         this.setState({
             coordinate: {
@@ -90,9 +95,10 @@ export default class EventsExample extends Component {
     );
     // 打开弹窗
     handleOpenDrawer = (bole) => {
-        this.setState({
-            isModalVisible: bole
-        })
+        this.show()
+        // this.setState({
+        //     isModalVisible: bole
+        // })
     }
     // 地图规划 时间 秒转时分秒
     secondToDate = (result) => {
@@ -121,6 +127,65 @@ export default class EventsExample extends Component {
         return num;
     }
 
+    // 弹窗动画 弹出
+    in() {
+        Animated.parallel([
+            Animated.timing(
+                this.state.offset,
+                {
+                    easing: Easing.linear,
+                    duration: 500,
+                    toValue: 1
+                }
+            ),
+            Animated.timing(
+                this.state.opacitys,
+                {
+                    easing: Easing.linear,
+                    duration: 500,
+                    toValue: 0.9
+                }
+            )
+        ]).start()
+    }
+
+    // 弹窗动画下拉
+    out() {
+        Animated.parallel([
+            Animated.timing(
+                this.state.offset,
+                {
+                    easing: Easing.linear,
+                    duration: 500,
+                    toValue: 0
+                }
+            ),
+            Animated.timing(
+                this.state.opacitys,
+                {
+                    easing: Easing.linear,
+                    duration: 300,
+                    toValue: 0
+                }
+            )
+        ]).start()
+
+        setTimeout(
+            () => this.setState({show: false}),
+            1500
+        )
+    }
+
+    show() {
+        this.setState({
+            show: true
+        }, this.in())
+    }
+
+    hide() {
+        this.out()
+    }
+
     render() {
         let statusBarHeight;
         if (Platform.OS === "ios") {
@@ -132,7 +197,7 @@ export default class EventsExample extends Component {
         }
         return (
             <SafeAreaView
-                style={[{ flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
+                style={[{flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
             >
                 <StatusBar
                     animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden 
@@ -235,7 +300,8 @@ export default class EventsExample extends Component {
                                     }
                                 </View>
                                 <View style={styles.MsgBoxContentBottom}>
-                                    <Text style={styles.MsgBoxContentBottomtext}>步行{this.props.RouteMsg.walking_distance/1000}公里·途径{this.handleCountBusline(this.props.RouteMsg)}站·{this.props.RouteMsg.cost}元</Text>
+                                    <Text
+                                        style={styles.MsgBoxContentBottomtext}>步行{this.props.RouteMsg.walking_distance / 1000}公里·途径{this.handleCountBusline(this.props.RouteMsg)}站·{this.props.RouteMsg.cost}元</Text>
                                     <View style={styles.MsgBoxContentBottombtn}>
                                         <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
                                     </View>
@@ -258,199 +324,6 @@ export default class EventsExample extends Component {
                                 </TouchableWithoutFeedback>
                             </View>
                         </View>
-                        <Modal isVisible={this.state.isModalVisible} swipeDirection='down' propertySwipe={true}
-                               scrollHorizontal scrollOffset={10} style={[styles.DrawerBottom]}>
-                            <View style={styles.DrawerBottomBigBox}>
-                                <View style={[styles.MsgBoxContent, styles.DrawerMsgBoxContent]}>
-                                    <View style={styles.MsgBoxContentHead}>
-                                        <Text
-                                            style={styles.MsgBoxContentHeadtext}>全程 {this.secondToDate(this.props.RouteMsg.duration)}</Text>
-                                        <View style={styles.MsgBoxContentHeadbtn}>
-                                            <FontAwesome name='bell' siz={14} color='#fff'></FontAwesome>
-                                            <Text style={styles.MsgBoxContentHeadbtntext}>下车提醒</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.MsgBoxCenter}>
-                                        {
-                                            this.props.RouteMsg.segments.map((step, stepindex) => {
-                                                return (
-                                                    stepindex < 5 &&
-                                                    <View style={styles.PointListItemCenterBox} key={stepindex}>
-                                                        <View
-                                                            style={styles.MsgBoxCenterItem}>
-                                                            {
-                                                                step.bus.buslines.length > 0 ?
-                                                                    <Text
-                                                                        style={styles.MsgBoxCenterItemText}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
-                                                                    <Text
-                                                                        style={styles.MsgBoxCenterItemText}>步行</Text>
-                                                            }
-                                                        </View>
-                                                    </View>
-                                                )
-                                            })
-                                        }
-                                    </View>
-                                    <View style={styles.MsgBoxContentBottom}>
-                                        <Text style={styles.MsgBoxContentBottomtext}>步行{this.props.RouteMsg.walking_distance/1000}公里·途径{this.handleCountBusline(this.props.RouteMsg)}站·{this.props.RouteMsg.cost}元</Text>
-                                        <View style={styles.MsgBoxContentBottombtn}>
-                                            <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
-                                        </View>
-                                    </View>
-                                    <View styles={styles.MsgBoxContentBtn}>
-                                        <TouchableWithoutFeedback onPress={this.handleOpenDrawer.bind(this, false)}>
-                                            <AntDesign name='up' color='#ccc' size={14}
-                                                       style={styles.MsgBoxContentBtnIcon}></AntDesign>
-                                        </TouchableWithoutFeedback>
-                                    </View>
-                                </View>
-                                <View style={styles.DrawerBottomContent}>
-                                    <ScrollView
-                                        showsVerticalScrollIndicator = {false}
-                                    >
-                                        <View style={styles.planItem}>
-                                            <FontAwesome5 name='walking' size={20}
-                                                          color='rgba(253, 173, 46, 1.000)'
-                                                          style={styles.PointListItemTopIcon}></FontAwesome5>
-                                            <View style={styles.planItemCenter}>
-                                                <View style={styles.planItemCentercircular}></View>
-                                                {
-                                                    ['', '', '', '', ''].map((item) => {
-                                                        return (
-                                                            <View style={styles.planItemCentercirculartwo}></View>
-                                                        )
-                                                    })
-                                                }
-                                            </View>
-                                            <View style={styles.planItemRight}>
-                                                <Text style={styles.planItemRightTitle}>中国评剧艺术中心</Text>
-                                                <Text style={styles.planItemRightContent}>步行1.8公里（27分钟)</Text>
-                                            </View>
-                                        </View>
-                                        <View style={[styles.TrainContent, styles.planItem]}>
-                                            <FontAwesome name='subway' size={20}
-                                                         color='rgba(0, 152, 110, 1.000)'
-                                                         style={styles.PointListItemTopIcon}></FontAwesome>
-                                            <View style={styles.planItemCenter}>
-                                                <View
-                                                    style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
-                                                <View style={styles.planItemCenterBoxTypeOne}></View>
-                                                <View
-                                                    style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
-                                                {
-                                                    true && ['', '', '', '', ''].map((item) => {
-                                                        return (
-                                                            <View style={styles.planItemCentercirculartwo}></View>
-                                                        )
-                                                    })
-                                                }
-                                            </View>
-                                            <View style={styles.planItemRight}>
-                                                <Text style={styles.planItemRightTitle}>北京南站 地铁站-D西南口</Text>
-                                                <View style={styles.planItemRightHead}>
-                                                    <View style={styles.planItemRightContentMsg}>
-                                                        <Text style={styles.planItemRightstart}>四号线大兴线</Text>
-                                                    </View>
-                                                    <Text style={styles.planItemRightEnd}>安河桥北方向</Text>
-                                                </View>
-                                                <View style={styles.planItemRightbody}>
-                                                    <Text style={styles.planItemRightbodyOne}>11:20进站</Text>
-                                                    <View style={styles.planItemRightbodyBox}>
-                                                        {
-                                                            this.state.SubwayColor.map((item, index) => {
-                                                                return (
-                                                                    <View
-                                                                        style={[styles.planItemRightbodyBoxItem, {backgroundColor: item}, {borderTopLeftRadius: index === 0 ? deviceWidth * 0.025 : 0}, {borderTopRightRadius: index === this.state.SubwayColor.length - 1 ? deviceWidth * 0.025 : 0}]}>
-                                                                        <Text
-                                                                            style={[styles.planItemRightbodyBoxItemText]}>{index + 1}</Text>
-                                                                    </View>
-                                                                )
-                                                            })
-                                                        }
-                                                    </View>
-                                                </View>
-                                                <View style={styles.planItemRightBottom}>
-                                                    <AntDesign name='down' color='rgba(162, 162, 162, 1.000)'
-                                                               size={14}></AntDesign>
-                                                    <Text style={styles.planItemRightBottomText}>步行1.8公里（27分钟)</Text>
-                                                </View>
-                                                <View style={styles.planItemRightBottom}>
-                                                    <AntDesign name='down' color='rgba(162, 162, 162, 1.000)'
-                                                               size={14}></AntDesign>
-                                                    <Text style={styles.planItemRightBottomText}>乘坐3站（6分钟）</Text>
-                                                </View>
-                                                <Text
-                                                    style={[styles.planItemRightTitle, {marginTop: deviceWidth * 0.03}]}>宣武门-地铁站</Text>
-                                                {
-                                                    true &&
-                                                    <Text style={styles.planItemRightContent}>站内换乘118米（2分钟）</Text>
-                                                }
-                                            </View>
-                                        </View>
-                                        <View style={[styles.TrainContent, styles.planItem]}>
-                                            <FontAwesome name='subway' size={20}
-                                                         color='rgba(0, 152, 110, 1.000)'
-                                                         style={styles.PointListItemTopIcon}></FontAwesome>
-                                            <View style={styles.planItemCenter}>
-                                                <View
-                                                    style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
-                                                <View style={styles.planItemCenterBoxTypeOne}></View>
-                                                <View
-                                                    style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
-                                                {
-                                                    true && ['', '', '', '', ''].map((item) => {
-                                                        return (
-                                                            <View style={styles.planItemCentercirculartwo}></View>
-                                                        )
-                                                    })
-                                                }
-                                            </View>
-                                            <View style={styles.planItemRight}>
-                                                <Text style={styles.planItemRightTitle}>北京南站 地铁站-D西南口</Text>
-                                                <View style={styles.planItemRightHead}>
-                                                    <View style={styles.planItemRightContentMsg}>
-                                                        <Text style={styles.planItemRightstart}>四号线大兴线</Text>
-                                                    </View>
-                                                    <Text style={styles.planItemRightEnd}>安河桥北方向</Text>
-                                                </View>
-                                                <View style={styles.planItemRightbody}>
-                                                    <Text style={styles.planItemRightbodyOne}>11:20进站</Text>
-                                                    <View style={styles.planItemRightbodyBox}>
-                                                        {
-                                                            this.state.SubwayColor.map((item, index) => {
-                                                                return (
-                                                                    <View
-                                                                        style={[styles.planItemRightbodyBoxItem, {backgroundColor: item}, {borderTopLeftRadius: index === 0 ? deviceWidth * 0.025 : 0}, {borderTopRightRadius: index === this.state.SubwayColor.length - 1 ? deviceWidth * 0.025 : 0}]}>
-                                                                        <Text
-                                                                            style={[styles.planItemRightbodyBoxItemText]}>{index + 1}</Text>
-                                                                    </View>
-                                                                )
-                                                            })
-                                                        }
-                                                    </View>
-                                                </View>
-                                                <View style={styles.planItemRightBottom}>
-                                                    <AntDesign name='down' color='rgba(162, 162, 162, 1.000)'
-                                                               size={14}></AntDesign>
-                                                    <Text style={styles.planItemRightBottomText}>步行1.8公里（27分钟)</Text>
-                                                </View>
-                                                <View style={styles.planItemRightBottom}>
-                                                    <AntDesign name='down' color='rgba(162, 162, 162, 1.000)'
-                                                               size={14}></AntDesign>
-                                                    <Text style={styles.planItemRightBottomText}>乘坐3站（6分钟）</Text>
-                                                </View>
-                                                <Text
-                                                    style={[styles.planItemRightTitle, {marginTop: deviceWidth * 0.03}]}>宣武门-地铁站</Text>
-                                                {
-                                                    true &&
-                                                    <Text style={styles.planItemRightContent}>站内换乘118米（2分钟）</Text>
-                                                }
-                                            </View>
-                                        </View>
-                                    </ScrollView>
-                                </View>
-                            </View>
-                        </Modal>
                         <TouchableWithoutFeedback onPress={() => Actions.push('needhelp')}>
                             <View style={styles.needHelp}>
                                 <View style={styles.needHelpIcon}>
@@ -470,6 +343,191 @@ export default class EventsExample extends Component {
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
+                }
+                {
+                    this.state.show && <Animated.View style={[styles.modal, {
+                        transform: [{
+                            translateY: this.state.offset.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [deviceHeight, 0]
+                            }),
+                        }]
+                    }, {opacity: this.state.opacitys}]}>
+                        <View style={styles.DrawerBottomBigBox}>
+                            <View style={[styles.MsgBoxContent, styles.DrawerMsgBoxContent]}>
+                                <View style={styles.MsgBoxContentHead}>
+                                    <Text
+                                        style={styles.MsgBoxContentHeadtext}>全程 {this.secondToDate(this.props.RouteMsg.duration)}</Text>
+                                    <View style={styles.MsgBoxContentHeadbtn}>
+                                        <FontAwesome name='bell' siz={14} color='#fff'></FontAwesome>
+                                        <Text style={styles.MsgBoxContentHeadbtntext}>下车提醒</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.MsgBoxCenter}>
+                                    {
+                                        this.props.RouteMsg.segments.map((step, stepindex) => {
+                                            return (
+                                                stepindex < 5 &&
+                                                <View style={styles.PointListItemCenterBox} key={stepindex}>
+                                                    <View
+                                                        style={styles.MsgBoxCenterItem}>
+                                                        {
+                                                            step.bus.buslines.length > 0 ?
+                                                                <Text
+                                                                    style={styles.MsgBoxCenterItemText}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
+                                                                <Text
+                                                                    style={styles.MsgBoxCenterItemText}>步行</Text>
+                                                        }
+                                                    </View>
+                                                </View>
+                                            )
+                                        })
+                                    }
+                                </View>
+                                <View style={styles.MsgBoxContentBottom}>
+                                    <Text
+                                        style={styles.MsgBoxContentBottomtext}>步行{this.props.RouteMsg.walking_distance / 1000}公里·途径{this.handleCountBusline(this.props.RouteMsg)}站·{this.props.RouteMsg.cost}元</Text>
+                                    <View style={styles.MsgBoxContentBottombtn}>
+                                        <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
+                                    </View>
+                                </View>
+                                <View styles={styles.MsgBoxContentBtn}>
+                                    <TouchableWithoutFeedback onPress={() => {
+                                        this.out()
+                                    }}>
+                                        <AntDesign name='up' color='#ccc' size={14}
+                                                   style={styles.MsgBoxContentBtnIcon}></AntDesign>
+                                    </TouchableWithoutFeedback>
+                                </View>
+                            </View>
+                            <View style={styles.DrawerBottomContent}>
+                                <ScrollView
+                                    showsVerticalScrollIndicator={false}
+                                >
+                                    {
+                                        this.props.RouteMsg.segments.map((step, stepindex) => {
+                                            if (step.bus.buslines.length === 0) {
+                                                return (
+                                                    <View style={styles.planItem}>
+                                                        <FontAwesome5 name='walking' size={20}
+                                                                      color='rgba(253, 173, 46, 1.000)'
+                                                                      style={styles.PointListItemTopIcon}></FontAwesome5>
+                                                        <View style={styles.planItemCenter}>
+                                                            <View style={styles.planItemCentercircular}></View>
+                                                            {
+                                                                ['', '', '', '', ''].map((item) => {
+                                                                    return (
+                                                                        <View
+                                                                            style={styles.planItemCentercirculartwo}></View>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </View>
+                                                        <View style={styles.planItemRight}>
+                                                            {Array.isArray(step.walking.steps[0].road)
+                                                                ? <Text style={styles.planItemRightTitle}>未知地名</Text> :
+                                                                <Text
+                                                                    style={styles.planItemRightTitle}>{step.walking.steps[0].road}</Text>
+                                                            }
+                                                            <Text
+                                                                style={styles.planItemRightContent}>步行{step.walking.distance / 1000}公里（{this.secondToDate(step.walking.duration)})</Text>
+                                                        </View>
+                                                    </View>
+                                                )
+                                            } else if (step.bus.buslines.length > 0) {
+                                                return (
+                                                    <View style={[styles.TrainContent, styles.planItem]}>
+                                                        {
+                                                            step.bus.buslines[0].type === '地铁线路' ?
+                                                                <FontAwesome name='subway' size={20}
+                                                                             color='rgba(0, 152, 110, 1.000)'
+                                                                             style={styles.PointListItemTopIcon}></FontAwesome> :
+                                                                <FontAwesome5 name='bus' size={20}
+                                                                              color='rgba(0, 86, 136, 1.000)'
+                                                                              style={styles.PointListItemTopIcon}></FontAwesome5>
+                                                        }
+                                                        <View style={styles.planItemCenter}>
+                                                            <View
+                                                                style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
+                                                            <View style={styles.planItemCenterBoxTypeOne}></View>
+                                                            <View
+                                                                style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
+                                                            {
+                                                                true && ['', '', '', '', ''].map((item) => {
+                                                                    return (
+                                                                        <View
+                                                                            style={styles.planItemCentercirculartwo}></View>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </View>
+                                                        <View style={styles.planItemRight}>
+                                                            {
+                                                                step.bus.buslines[0].type === '地铁线路' ? <Text
+                                                                        style={styles.planItemRightTitle}>{step.bus.buslines[0].departure_stop.name} 地铁站{step.exit.name ? `-${step.exit.name}` : ''}</Text> :
+                                                                    <Text
+                                                                        style={styles.planItemRightTitle}>{step.bus.buslines[0].departure_stop.name} 公交站</Text>
+
+                                                            }
+                                                            <View style={styles.planItemRightHead}>
+                                                                <View style={styles.planItemRightContentMsg}>
+                                                                    <Text
+                                                                        style={styles.planItemRightstart}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text>
+                                                                </View>
+                                                                <Text
+                                                                    style={styles.planItemRightEnd}>{step.bus.buslines[0].name}</Text>
+                                                            </View>
+                                                            <View style={styles.planItemRightbody}>
+                                                                {/*<Text style={styles.planItemRightbodyOne}>11:20进站</Text>*/}
+                                                                <View style={styles.planItemRightbodyBox}>
+                                                                    {
+                                                                        step.bus.buslines[0].type === '地铁线路' && this.state.SubwayColor.map((item, index) => {
+                                                                            return (
+                                                                                <View
+                                                                                    style={[styles.planItemRightbodyBoxItem, {backgroundColor: item}, {borderTopLeftRadius: index === 0 ? deviceWidth * 0.025 : 0}, {borderTopRightRadius: index === this.state.SubwayColor.length - 1 ? deviceWidth * 0.025 : 0}]}>
+                                                                                    <Text
+                                                                                        style={[styles.planItemRightbodyBoxItemText]}>{index + 1}</Text>
+                                                                                </View>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </View>
+                                                            </View>
+                                                            <View style={styles.planItemRightBottom}>
+                                                                <AntDesign name='down'
+                                                                           color='rgba(162, 162, 162, 1.000)'
+                                                                           size={14}></AntDesign>
+                                                                <Text
+                                                                    style={styles.planItemRightBottomText}>步行{step.walking.distance / 1000}公里</Text>
+                                                            </View>
+                                                            <View style={styles.planItemRightBottom}>
+                                                                <AntDesign name='down'
+                                                                           color='rgba(162, 162, 162, 1.000)'
+                                                                           size={14}></AntDesign>
+                                                                <Text
+                                                                    style={styles.planItemRightBottomText}>乘坐{step.bus.buslines[0].via_num}站（{this.secondToDate(step.bus.buslines[0].duration)})</Text>
+                                                            </View>
+                                                            {
+                                                                step.bus.buslines[0].type === '地铁线路' ? <Text
+                                                                        style={[styles.planItemRightTitle, {marginTop: deviceWidth * 0.03}]}>{step.bus.buslines[0].arrival_stop.name} 地铁站{step.exit.name ? `-${step.exit.name}` : ''}</Text> :
+                                                                    <Text
+                                                                        style={[styles.planItemRightTitle, {marginTop: deviceWidth * 0.03}]}>{step.bus.buslines[0].arrival_stop.name} 公交站</Text>
+                                                            }
+                                                            {
+                                                                false &&
+                                                                <Text
+                                                                    style={styles.planItemRightContent}>站内换乘118米（2分钟）</Text>
+                                                            }
+                                                        </View>
+                                                    </View>
+                                                )
+                                            }
+                                        })
+                                    }
+                                </ScrollView>
+                            </View>
+                        </View>
+                    </Animated.View>
                 }
             </SafeAreaView>
         );
@@ -567,8 +625,7 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0, 133, 227, 1.000)',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center',
-        // marginLeft:deviceWidth*0.23
+        alignItems: 'center'
     },
     MsgBoxContentBottombtntext: {
         fontSize: 14,
@@ -619,11 +676,11 @@ const styles = StyleSheet.create({
     },
     DrawerBottomContent: {
         width: deviceWidth,
-        height: deviceHeight * 0.85,
+        // height: deviceHeight * 0.85+20,
         backgroundColor: '#fff',
         marginTop: -60,
         paddingTop: 60,
-        paddingBottom: 100,
+        paddingBottom: 130,
         zIndex: -1,
         overflow: 'hidden'
     },
@@ -772,5 +829,17 @@ const styles = StyleSheet.create({
     MarkerText: {
         color: 'rgba(0, 157, 250, 1.000)',
         fontSize: 16
+    },
+    modal: {
+        height: deviceHeight,
+        width: deviceWidth,
+        backgroundColor: 'rgba(0, 16, 30, 1.000)',
+        // opacity:.9,
+        justifyContent: 'flex-end'
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        height: deviceHeight * 0.8,
+        width: deviceWidth
     }
 })
