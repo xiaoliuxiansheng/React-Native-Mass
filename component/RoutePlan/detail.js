@@ -96,9 +96,6 @@ export default class EventsExample extends Component {
     // 打开弹窗
     handleOpenDrawer = (bole) => {
         this.show()
-        // this.setState({
-        //     isModalVisible: bole
-        // })
     }
     // 地图规划 时间 秒转时分秒
     secondToDate = (result) => {
@@ -315,7 +312,7 @@ export default class EventsExample extends Component {
                             </View>
                             <View style={styles.MsgBoxBtn}>
                                 <TouchableWithoutFeedback onPress={() => {
-                                    Actions.push('routePay')
+                                    Actions.push('routePay',{ RouteMsg: this.props.RouteMsg})
                                 }
                                 }>
                                     <View style={styles.MsgBoxContentBtnBox}>
@@ -424,11 +421,11 @@ export default class EventsExample extends Component {
                                                             }
                                                         </View>
                                                         <View style={styles.planItemRight}>
-                                                            {Array.isArray(step.walking.steps[0].road)
-                                                                ? <Text style={styles.planItemRightTitle}>未知地名</Text> :
+                                                            {/*{Array.isArray(step.walking.steps[0].road)*/}
+                                                            {/*    ? <Text style={styles.planItemRightTitle}>未知地名</Text> :*/}
                                                                 <Text
-                                                                    style={styles.planItemRightTitle}>{step.walking.steps[0].road}</Text>
-                                                            }
+                                                                    style={styles.planItemRightTitle}>{!Array.isArray(step.walking.steps[0].road) ? step.walking.steps[0].road:this.props.RouteMsg.segments[stepindex-1].bus.buslines[0].arrival_stop.name}</Text>
+                                                            {/*}*/}
                                                             <Text
                                                                 style={styles.planItemRightContent}>步行{step.walking.distance / 1000}公里（{this.secondToDate(step.walking.duration)})</Text>
                                                         </View>
@@ -453,7 +450,7 @@ export default class EventsExample extends Component {
                                                             <View
                                                                 style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
                                                             {
-                                                                true && ['', '', '', '', ''].map((item) => {
+                                                                step.walking.distance && ['', '', '', '', ''].map((item) => {
                                                                     return (
                                                                         <View
                                                                             style={styles.planItemCentercirculartwo}></View>
@@ -493,13 +490,15 @@ export default class EventsExample extends Component {
                                                                     }
                                                                 </View>
                                                             </View>
-                                                            <View style={styles.planItemRightBottom}>
-                                                                <AntDesign name='down'
-                                                                           color='rgba(162, 162, 162, 1.000)'
-                                                                           size={14}></AntDesign>
-                                                                <Text
-                                                                    style={styles.planItemRightBottomText}>步行{step.walking.distance / 1000}公里</Text>
-                                                            </View>
+                                                            {
+                                                                step.walking.distance && <View style={styles.planItemRightBottom}>
+                                                                    <AntDesign name='down'
+                                                                               color='rgba(162, 162, 162, 1.000)'
+                                                                               size={14}></AntDesign>
+                                                                    <Text
+                                                                        style={styles.planItemRightBottomText}>步行{step.walking.distance / 1000}公里</Text>
+                                                                </View>
+                                                            }
                                                             <View style={styles.planItemRightBottom}>
                                                                 <AntDesign name='down'
                                                                            color='rgba(162, 162, 162, 1.000)'
@@ -514,9 +513,9 @@ export default class EventsExample extends Component {
                                                                         style={[styles.planItemRightTitle, {marginTop: deviceWidth * 0.03}]}>{step.bus.buslines[0].arrival_stop.name} 公交站</Text>
                                                             }
                                                             {
-                                                                false &&
+                                                                step.walking.distance &&
                                                                 <Text
-                                                                    style={styles.planItemRightContent}>站内换乘118米（2分钟）</Text>
+                                                                    style={styles.planItemRightContent}>换乘{step.walking.distance}米（{this.secondToDate(step.walking.duration)}）</Text>
                                                             }
                                                         </View>
                                                     </View>
@@ -556,7 +555,7 @@ const styles = StyleSheet.create({
         paddingTop: deviceWidth * 0.03,
         paddingLeft: deviceWidth * 0.04,
         paddingRight: deviceWidth * 0.04,
-        paddingBottom: deviceWidth * 0.02,
+        paddingBottom: deviceWidth * 0.02
         // height:deviceWidth*0.3
     },
     MsgBoxContentHead: {
@@ -580,8 +579,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         backgroundColor: 'rgba(0, 133, 227, 1.000)',
-        alignItems: 'center',
-        // marginLeft:deviceWidth*0.33
+        alignItems: 'center'
     },
     MsgBoxContentHeadbtntext: {
         fontSize: 14,
@@ -591,11 +589,13 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     },
     MsgBoxCenter: {
-        marginTop: deviceWidth * 0.02,
+        marginTop: deviceWidth * 0.01,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexWrap:'wrap'
     },
     MsgBoxCenterItem: {
+        marginTop: deviceWidth * 0.01,
         backgroundColor: 'rgba(0, 151, 110, 1.000)',
         marginRight: deviceWidth * 0.025,
         borderRadius: deviceWidth * 0.015,
@@ -670,23 +670,27 @@ const styles = StyleSheet.create({
         // justifyContent: 'flex-end'
     },
     DrawerBottomBigBox: {
-        height: deviceHeight * 0.85,
+        height: deviceHeight * 0.8,
         marginTop: deviceHeight * 0.15 + 60,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent:'flex-end',
+        position:'relative'
     },
     DrawerBottomContent: {
         width: deviceWidth,
-        // height: deviceHeight * 0.85+20,
         backgroundColor: '#fff',
-        marginTop: -60,
+        height:deviceHeight * 0.8,
+        // marginTop: -60,
         paddingTop: 60,
-        paddingBottom: 130,
+        paddingBottom: 20,
         zIndex: -1,
         overflow: 'hidden'
     },
     DrawerMsgBoxContent: {
         borderWidth: 1,
-        borderColor: '#eee'
+        borderColor: '#eee',
+        position: 'absolute',
+        top:-75
     },
     planItem: {
         marginTop: deviceWidth * 0.05,
@@ -834,7 +838,6 @@ const styles = StyleSheet.create({
         height: deviceHeight,
         width: deviceWidth,
         backgroundColor: 'rgba(0, 16, 30, 1.000)',
-        // opacity:.9,
         justifyContent: 'flex-end'
     },
     modalContent: {
