@@ -15,6 +15,7 @@ import {
   StatusBar,
   NativeModules,
   Dimensions,
+  Platform
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

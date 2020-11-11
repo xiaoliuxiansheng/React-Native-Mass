@@ -17,7 +17,9 @@ import {
     SafeAreaView,
     NativeModules,
     StatusBar,
-    Image
+    Image,
+    Platform,
+    BackHandler
 } from 'react-native'
 import AntDesign from "react-native-vector-icons/AntDesign"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -30,7 +32,7 @@ import {Drawer as DrawerTest} from 'teaset'
 import AllModules from './modulars/Index.js'
 import {Actions} from 'react-native-router-flux'
 import {observer, inject} from 'mobx-react';
-import {Drawer as DrawerAnt, DatePicker, List, Provider} from '@ant-design/react-native';
+import {Drawer as DrawerAnt, Toast, portal, ActivityIndicator} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import SplashScreen from 'react-native-splash-screen'
 
@@ -117,12 +119,38 @@ export default class Home extends Component {
             inputText: '',
             showHeader: true, // 调用菜单抽屉时 隐藏头部导航
             value: undefined,
-            showBar:null
+            showBar: null,
+            lastBackPressed: 0,
+            ActivityIndicatorShow: false
         };
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         SplashScreen.hide()
+        if (Platform.OS === 'android') {
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS === 'android') {
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        }
+    }
+
+    onBackAndroid = () => {
+        //禁用返回键
+        if (this.props.navigation.isFocused()) {//判断   该页面是否处于聚焦状态
+            if (this.state.lastBackPressed && this.state.lastBackPressed + 2000 >= Date.now()) {
+                //最近2秒内按过back键，可以退出应用。
+                // return false;
+                BackHandler.exitApp();//直接退出APP
+            } else {
+                this.state.lastBackPressed = Date.now();
+                Toast.info('再按一次退出应用', 1);//提示
+                return true;
+            }
+        }
     }
 
     handleSetTab = (index) => {
@@ -130,13 +158,16 @@ export default class Home extends Component {
         if (defineTab !== index) {
             handleSaveTab(index)
         }
+        // if (index !== 1) {
+        //     Toast.fail("该功能模块暂未开放", 1)
+        // }
         if (this.DrawerTop) {
             this.DrawerTop.close()
         }
     }
     // 跳转至套餐页面
-    handleToMonthPack = () => {
-        Actions.push('monthpackage')
+    handleToMonthPack = (url) => {
+        Actions.push(url)
     }
     // 取消搜索地址框
     cancelSearch = () => {
@@ -175,7 +206,7 @@ export default class Home extends Component {
     handelSearchPlace = async (type) => {
         this.setState({
             searchData: [],
-            showBar:1
+            showBar: 1
         })
         if (+type === 1) {
             this.setState({
@@ -230,9 +261,7 @@ export default class Home extends Component {
                             defineDestination && defineDestination.addressComponent &&
                             <Text style={styles.city}>{defineDestination.addressComponent.province}</Text>
                         }
-                        <TouchableWithoutFeedback onPress={() => {
-                            NativeModules.RNManagerModule.RNActivity();
-                        }}>
+                        <TouchableWithoutFeedback onPress={this.handleRNManagerModule}>
                             <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
                                       style={styles.message}></Ionicons>
                         </TouchableWithoutFeedback>
@@ -275,7 +304,7 @@ export default class Home extends Component {
     }
     openDrawers = (bole) => {
         this.setState({
-            showBar:2
+            showBar: 2
         })
         this.drawerants.openDrawer()
     }
@@ -320,6 +349,9 @@ export default class Home extends Component {
     }
     // 获取地址信息以供选择
     handelGetamapData = async (msg) => {
+        this.setState({
+            ActivityIndicatorShow: true
+        })
         const {amapDataUrl, amapkey} = this.props.homeStore
         // 获取之前本地存储的历史记录
         let storage = await this.getMyObject() !== null ? await this.getMyObject() : []
@@ -334,7 +366,8 @@ export default class Home extends Component {
             .then((json) => {
                 data.push(...json.pois)
                 this.setState({
-                    searchData: data
+                    searchData: data,
+                    ActivityIndicatorShow: false
                 })
             }).catch((err) => console.log(err)).finally(() => console.log('finally'))
     }
@@ -342,15 +375,6 @@ export default class Home extends Component {
     handleLinkapp = () => {
         if (this.state.departureLocation && this.state.destinationLocation) {
             Actions.push('routeplan')
-            //唤起手机自带地图代码（并传递起始地址）
-            // const {departureLocation,destinationLocation} = this.props.homeStore
-            // let one = departureLocation.split(',')
-            // let two = destinationLocation.split(',')
-            // MapLinking.planRoute({lat: one[1], lng: one[0], title: '起点'}, {
-            //     lat: two[1],
-            //     lng: two[0],
-            //     title: '终点'
-            // }, 'walk');
         }
     }
     // 获取两点间的距离
@@ -370,6 +394,21 @@ export default class Home extends Component {
     }
     onChange = value => {
         this.setState({value});
+    }
+
+    // 跳转七陌sdk
+    handleRNManagerModule = () => {
+        if (Platform.OS === "android") {
+            NativeModules.RNManagerModule.RNActivity();
+        } else {
+            // NativeModules.RNManagerModule.QMConnect()
+            // console.log(NativeModules.QMLineManager)
+            // const QMLineManager = NativeModules.QMLineManager;
+            // QMLineManager.addEvent(
+            //     'Birthday Party',
+            //     '4 Privet Drive, Surrey'
+            // );
+        }
     }
 
     render() {
@@ -406,7 +445,7 @@ export default class Home extends Component {
                 {
                     <ScrollView
                         style={styles.searchItemList}
-                        showsVerticalScrollIndicator = {false}
+                        showsVerticalScrollIndicator={false}
                     >
                         {
                             this.state.searchData.map((item, index) => {
@@ -437,6 +476,9 @@ export default class Home extends Component {
                                 )
                             })
                         }
+                        {
+                            this.state.ActivityIndicatorShow && <ActivityIndicator color="white"/>
+                        }
                     </ScrollView>
                 }
             </View>
@@ -445,47 +487,57 @@ export default class Home extends Component {
             <View style={[styles.drawerBox]}>
                 <View style={styles.drawerBoxContent}>
                     <FontAwesome name="user-circle" size={30} style={styles.drawerBoxIconFirst}></FontAwesome>
-                    <Text style={styles.drawerBoxTextFirst}>某某某</Text>
+                    <Text style={styles.drawerBoxTextFirst}>游客</Text>
                 </View>
                 <View style={{backgroundColor: 'rgba(0, 41, 84, 1.000)'}}>
-                    <View style={styles.drawerBoxContent} marginTop={10}>
-                        <Fontisto name="person" size={20} style={styles.drawerBoxIcon}></Fontisto>
-                        <Text style={styles.drawerBoxText}>个人信息</Text>
-                    </View>
-                    <View style={styles.drawerBoxContent}>
-                        <FontAwesome5 name="tasks" size={20} style={styles.drawerBoxIcon}></FontAwesome5>
-                        <Text style={styles.drawerBoxText}>我的订单</Text>
-                    </View>
-                    <View style={styles.drawerBoxContent}>
-                        <Entypo name="wallet" size={20} style={styles.drawerBoxIcon}></Entypo>
-                        <Text style={styles.drawerBoxText}>我的钱包</Text>
-                    </View>
-                    <TouchableWithoutFeedback onPress={this.handleToMonthPack}>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack.bind(this, 'undevelopment')}>
+                        <View style={styles.drawerBoxContent} marginTop={10}>
+                            <Fontisto name="person" size={20} style={styles.drawerBoxIcon}></Fontisto>
+                            <Text style={styles.drawerBoxText}>个人信息</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack.bind(this, 'undevelopment')}>
+                        <View style={styles.drawerBoxContent}>
+                            <FontAwesome5 name="tasks" size={20} style={styles.drawerBoxIcon}></FontAwesome5>
+                            <Text style={styles.drawerBoxText}>我的订单</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack.bind(this, 'undevelopment')}>
+                        <View style={styles.drawerBoxContent}>
+                            <Entypo name="wallet" size={20} style={styles.drawerBoxIcon}></Entypo>
+                            <Text style={styles.drawerBoxText}>我的钱包</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack.bind(this, 'monthpackage')}>
                         <View style={styles.drawerBoxContent}>
                             <FontAwesome name="envelope-square" size={20} style={styles.drawerBoxIcon}></FontAwesome>
                             <Text style={styles.drawerBoxText}>月租套餐</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <View style={styles.drawerBoxContent}>
-                        <AntDesign name="Safety" size={20} style={styles.drawerBoxIcon}></AntDesign>
-                        <Text style={styles.drawerBoxText}>安全</Text>
-                    </View>
-                    <View style={styles.drawerBoxContent}>
-                        <Fontisto name="player-settings" size={20} style={styles.drawerBoxIcon}></Fontisto>
-                        <Text style={styles.drawerBoxText}>设置</Text>
-                    </View>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack.bind(this, 'undevelopment')}>
+                        <View style={styles.drawerBoxContent}>
+                            <AntDesign name="Safety" size={20} style={styles.drawerBoxIcon}></AntDesign>
+                            <Text style={styles.drawerBoxText}>安全</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this.handleToMonthPack.bind(this, 'undevelopment')}>
+                        <View style={styles.drawerBoxContent}>
+                            <Fontisto name="player-settings" size={20} style={styles.drawerBoxIcon}></Fontisto>
+                            <Text style={styles.drawerBoxText}>设置</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
         )
         return (
             // 对安卓IOS刘海屏、异形屏 进行适配
             <DrawerAnt
-                sidebar={this.state.showBar === 1 ? sidebar: sidebartwo}
+                sidebar={this.state.showBar === 1 ? sidebar : sidebartwo}
                 position="enum{'left'"
                 open={false}
                 drawerRef={el => (this.drawerants = el)}
                 drawerBackgroundColor="#fff"
-                drawerWidth={this.state.showBar === 1 ?Dimensions.get('window').width / 5 * 4 :Dimensions.get('window').width / 5 * 3}
+                drawerWidth={this.state.showBar === 1 ? Dimensions.get('window').width / 5 * 4 : Dimensions.get('window').width / 5 * 3}
             >
                 <SafeAreaView
                     style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
@@ -505,9 +557,7 @@ export default class Home extends Component {
                                 defineDestination && defineDestination.addressComponent &&
                                 <Text style={styles.city}>{defineDestination.addressComponent.province}</Text>
                             }
-                            <TouchableWithoutFeedback onPress={() => {
-                                NativeModules.RNManagerModule.RNActivity();
-                            }}>
+                            <TouchableWithoutFeedback onPress={this.handleRNManagerModule}>
                                 <Ionicons name='chatbubble-ellipses' size={28} color="#FFFFFF"
                                           style={styles.message}></Ionicons>
                             </TouchableWithoutFeedback>
@@ -515,13 +565,14 @@ export default class Home extends Component {
                         <View style={styles.menu}>
                             <ScrollView
                                 horizontal={true} // 横向
-                                showsHorizontalScrollIndicator={false} >
+                                showsHorizontalScrollIndicator={false}>
                                 <View style={styles.menuLeft}>
                                     {
                                         this.state.tabType.map((item, index) => {
                                             return (
                                                 // index < 4 &&
-                                                <TouchableWithoutFeedback onPress={this.handleSetTab.bind(this, index + 1)}>
+                                                <TouchableWithoutFeedback
+                                                    onPress={this.handleSetTab.bind(this, index + 1)}>
                                                     <Text
                                                         key={index}
                                                         style={[styles.scrooltab, {color: defineTab === index + 1 ? 'rgb(255, 198, 69)' : '#ECECEC'}]}>{item.name}</Text>
@@ -579,13 +630,14 @@ export default class Home extends Component {
                                         </View>
                                     </View>
                                     <View style={styles.InputAddressBodyRight}>
+                                        <TouchableWithoutFeedback onPress={this.handleLinkapp}>
                                         <View
                                             style={[styles.InputAddressBodyRightBox, {backgroundColor: this.state.destination === '' || this.state.departure === '' ? '#eee' : 'rgba(30, 143, 245, 1.000)'}]}>
-                                            <TouchableWithoutFeedback onPress={this.handleLinkapp}>
+
                                                 <MaterialCommunityIcons name="navigation" size={20} color='#fff'
                                                 ></MaterialCommunityIcons>
-                                            </TouchableWithoutFeedback>
                                         </View>
+                                        </TouchableWithoutFeedback>
                                     </View>
                                 </View>
                             }
@@ -647,13 +699,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 41, 84, 1.000)',
         height: 35
     },
-    menuLeft:{
-        flex:5,
+    menuLeft: {
+        flex: 5,
         flexDirection: 'row'
     },
-    // menuRight:{
-    //     flex:1
-    // },
     modals: {
         flex: .9,
         textAlign: 'center',
@@ -664,8 +713,8 @@ const styles = StyleSheet.create({
     scrooltab: {
         // flex: 1,
         textAlign: 'center',
-        marginRight:15,
-        marginLeft:15,
+        marginRight: 15,
+        marginLeft: 15,
         lineHeight: 28,
         fontSize: 12
     },
@@ -730,8 +779,8 @@ const styles = StyleSheet.create({
     InputAddress: {
         backgroundColor: '#fff',
         position: 'absolute',
-        right: 40,
-        left: 40,
+        right: 20,
+        left: 20,
         bottom: 40,
         height: 180, //窗口高度
         borderRadius: 20
@@ -815,7 +864,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     InputAddressBodyLeft: {
-        flex: 6
+        flex: 5
     },
     InputAddressBodyRight: {
         flex: 1
@@ -831,11 +880,11 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(211,234,254,1.000)'
     },
     searchplace: {
-        flex:1,
+        flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: 'rgba(0, 41, 84, 1.000)',
-        paddingBottom:0
+        paddingBottom: 0
     },
     searchviewTitle: {
         paddingTop: 30,

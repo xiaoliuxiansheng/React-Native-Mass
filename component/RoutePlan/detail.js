@@ -19,7 +19,6 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import {MapView} from "react-native-amap3d";
-import Modal from 'react-native-modal';
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import {Actions} from "react-native-router-flux";
@@ -299,9 +298,11 @@ export default class EventsExample extends Component {
                                 <View style={styles.MsgBoxContentBottom}>
                                     <Text
                                         style={styles.MsgBoxContentBottomtext}>步行{this.props.RouteMsg.walking_distance / 1000}公里·途径{this.handleCountBusline(this.props.RouteMsg)}站·{this.props.RouteMsg.cost}元</Text>
-                                    <View style={styles.MsgBoxContentBottombtn}>
-                                        <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
-                                    </View>
+                                    <TouchableWithoutFeedback onPress={() => Actions.push('undevelopment')}>
+                                        <View style={styles.MsgBoxContentBottombtn}>
+                                            <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 </View>
                                 <View styles={styles.MsgBoxContentBtn}>
                                     <TouchableWithoutFeedback onPress={this.handleOpenDrawer.bind(this, true)}>
@@ -312,7 +313,7 @@ export default class EventsExample extends Component {
                             </View>
                             <View style={styles.MsgBoxBtn}>
                                 <TouchableWithoutFeedback onPress={() => {
-                                    Actions.push('routePay',{ RouteMsg: this.props.RouteMsg})
+                                    Actions.push('routePay', {RouteMsg: this.props.RouteMsg})
                                 }
                                 }>
                                     <View style={styles.MsgBoxContentBtnBox}>
@@ -329,7 +330,7 @@ export default class EventsExample extends Component {
                                 <Text style={styles.needHelpText}>紧急求助</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => Actions.push('undevelopment')}>
                             <View style={[styles.needHelp, {top: 115}]}>
                                 <View style={styles.needHelpIcon}>
                                     {/*<Text style={styles.needHelpText}>SOS</Text>*/}
@@ -384,9 +385,11 @@ export default class EventsExample extends Component {
                                 <View style={styles.MsgBoxContentBottom}>
                                     <Text
                                         style={styles.MsgBoxContentBottomtext}>步行{this.props.RouteMsg.walking_distance / 1000}公里·途径{this.handleCountBusline(this.props.RouteMsg)}站·{this.props.RouteMsg.cost}元</Text>
-                                    <View style={styles.MsgBoxContentBottombtn}>
-                                        <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
-                                    </View>
+                                    <TouchableWithoutFeedback onPress={() => Actions.push('undevelopment')}>
+                                        <View style={styles.MsgBoxContentBottombtn}>
+                                            <Text style={styles.MsgBoxContentBottombtntext}>站内导航</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 </View>
                                 <View styles={styles.MsgBoxContentBtn}>
                                     <TouchableWithoutFeedback onPress={() => {
@@ -423,8 +426,8 @@ export default class EventsExample extends Component {
                                                         <View style={styles.planItemRight}>
                                                             {/*{Array.isArray(step.walking.steps[0].road)*/}
                                                             {/*    ? <Text style={styles.planItemRightTitle}>未知地名</Text> :*/}
-                                                                <Text
-                                                                    style={styles.planItemRightTitle}>{!Array.isArray(step.walking.steps[0].road) ? step.walking.steps[0].road:this.props.RouteMsg.segments[stepindex-1].bus.buslines[0].arrival_stop.name}</Text>
+                                                            <Text
+                                                                style={styles.planItemRightTitle}>{!Array.isArray(step.walking.steps[0].road) ? step.walking.steps[0].road : this.props.RouteMsg.segments[stepindex - 1].bus.buslines[0].arrival_stop.name}</Text>
                                                             {/*}*/}
                                                             <Text
                                                                 style={styles.planItemRightContent}>步行{step.walking.distance / 1000}公里（{this.secondToDate(step.walking.duration)})</Text>
@@ -491,7 +494,8 @@ export default class EventsExample extends Component {
                                                                 </View>
                                                             </View>
                                                             {
-                                                                step.walking.distance && <View style={styles.planItemRightBottom}>
+                                                                step.walking.distance &&
+                                                                <View style={styles.planItemRightBottom}>
                                                                     <AntDesign name='down'
                                                                                color='rgba(162, 162, 162, 1.000)'
                                                                                size={14}></AntDesign>
@@ -592,7 +596,7 @@ const styles = StyleSheet.create({
         marginTop: deviceWidth * 0.01,
         flexDirection: 'row',
         alignItems: 'center',
-        flexWrap:'wrap'
+        flexWrap: 'wrap'
     },
     MsgBoxCenterItem: {
         marginTop: deviceWidth * 0.01,
@@ -673,13 +677,13 @@ const styles = StyleSheet.create({
         height: deviceHeight * 0.8,
         marginTop: deviceHeight * 0.15 + 60,
         alignItems: 'center',
-        justifyContent:'flex-end',
-        position:'relative'
+        justifyContent: 'flex-end',
+        position: 'relative'
     },
     DrawerBottomContent: {
         width: deviceWidth,
         backgroundColor: '#fff',
-        height:deviceHeight * 0.8,
+        height: deviceHeight * 0.8,
         // marginTop: -60,
         paddingTop: 60,
         paddingBottom: 20,
@@ -690,7 +694,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#eee',
         position: 'absolute',
-        top:-75
+        top: -75
     },
     planItem: {
         marginTop: deviceWidth * 0.05,

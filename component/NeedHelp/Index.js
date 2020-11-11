@@ -6,7 +6,7 @@
  * @update: 2020-07-14 14:50
  */
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, StatusBar, SafeAreaView, NativeModules} from 'react-native';
+import {View, Text, StyleSheet, Image, StatusBar, SafeAreaView, NativeModules,Platform} from 'react-native';
 import Sospng from '../../images/SOS.png'
 import Voicepng from '../../images/voice.png'
 const { StatusBarManager } = NativeModules;

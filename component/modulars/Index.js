@@ -13,33 +13,25 @@ import Typethree from './Typethree.js';
 import Typefour from './Typefour';
 
 export default class Index extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-    render() {
-        return (
-            <View style={styles.modalBody}>
-                {
-                    +this.props.selectTab === 1 && <Typeone></Typeone>
-                }
-                {
-                    +this.props.selectTab === 2 && <Typetwo></Typetwo>
-                }
-                {
-                    +this.props.selectTab === 3 && <Typethree></Typethree>
-                }
-                {
-                    +this.props.selectTab === 4 && <Typefour></Typefour>
-                }
-            </View>
-        )
-    }
+  render() {
+    return (
+      <View style={styles.modalBody}>
+        {+this.props.selectTab === 1 && <Typeone />}
+        {+this.props.selectTab === 2 && <Typetwo />}
+        {+this.props.selectTab === 3 && <Typethree />}
+        {+this.props.selectTab === 4 && <Typefour />}
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-    modalBody: {
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
+  modalBody: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
