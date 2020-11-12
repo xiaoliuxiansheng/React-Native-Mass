@@ -158,9 +158,6 @@ export default class Home extends Component {
         if (defineTab !== index) {
             handleSaveTab(index)
         }
-        // if (index !== 1) {
-        //     Toast.fail("该功能模块暂未开放", 1)
-        // }
         if (this.DrawerTop) {
             this.DrawerTop.close()
         }
@@ -401,13 +398,11 @@ export default class Home extends Component {
         if (Platform.OS === "android") {
             NativeModules.RNManagerModule.RNActivity();
         } else {
-            // NativeModules.RNManagerModule.QMConnect()
-            // console.log(NativeModules.QMLineManager)
-            // const QMLineManager = NativeModules.QMLineManager;
-            // QMLineManager.addEvent(
-            //     'Birthday Party',
-            //     '4 Privet Drive, Surrey'
-            // );
+            const CalendarManager = NativeModules.QMLineManager;
+            CalendarManager.addEvent(
+                'Birthday Party',
+                '4 Privet Drive, Surrey'
+            );
         }
     }
 

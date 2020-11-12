@@ -1,5 +1,5 @@
-#import <React/RCTBridgeModule.h>
 #import <Foundation/Foundation.h>
-@interface QMLineManager : NSObject <RCTBridgeModule>
+#import <React/RCTBridgeModule.h>
 
+@interface QMLineManager : NSObject <RCTBridgeModule>
 @end
