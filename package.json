@@ -28,7 +28,6 @@
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-amap3d": "2.0.1",
-    "react-native-camera": "3.32.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-map-linking": "^1.0.1",

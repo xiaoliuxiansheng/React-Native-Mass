@@ -661,7 +661,7 @@
 		65B1A0AE255A813E0023F349 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		65B1A13F255D04FA0023F349 /* QMLineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMLineManager.h; path = tctmass/QMLineManager.h; sourceTree = "<group>"; };
 		65B1A140255D04FB0023F349 /* QMLineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMLineManager.m; path = tctmass/QMLineManager.m; sourceTree = "<group>"; };
-		65B1A19F255D17290023F349 /* QMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMHomeViewController.m; path = tctmass/QMHomeViewController.m; sourceTree = "<group>"; };
+		65B1A19F255D17290023F349 /* QMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMHomeViewController.m; path = tctmass/QMHomeViewController.m; sourceTree = "<group>"; wrapsLines = 1; };
 		65B1A1A0255D17290023F349 /* QMHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMHomeViewController.h; path = tctmass/QMHomeViewController.h; sourceTree = "<group>"; };
 		65B1A1AC255D19880023F349 /* QMEmoticon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMEmoticon.bundle; sourceTree = "<group>"; };
 		65B1A1AD255D19880023F349 /* expressionImage.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = expressionImage.plist; sourceTree = "<group>"; };
@@ -3240,6 +3240,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CA2C53841BB642AA1EFC3929 /* Pods-tctmass.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3278,6 +3279,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 82583C064764AFE7844CF41F /* Pods-tctmass.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

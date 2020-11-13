@@ -1,149 +1,150 @@
-/* 
+/*
   Localizable.strings
   IMSDK-OC
 
   Created by lishuijiao on 2018/5/11.
   Copyright © 2018年 HCF. All rights reserved.
 */
-"button.logout" = "退出";
 
-"button.topeople" = "turn artficial";
+"button.logout" = "注销";
 
-"button.chat_img" = "picture";
+"button.topeople" = "转人工";
 
-"button.chat_file" = "file";
+"button.chat_img" = "图片";
 
-"button.chat_question" = "Commonproblems";
+"button.chat_file" = "文件";
 
-"button.chat_music" = "music";
+"button.chat_question" = "常见问题";
 
-"button.chat_video" = "video";
+"button.chat_music" = "音乐";
 
-"button.chat_other" = "other";
+"button.chat_video" = "视频";
 
-"button.chat_evaluate" = "evaluation";
+"button.chat_other" = "其他";
 
-"button.chat_title" = "Thank you for using our service. Please evaluate this service.";
+"button.chat_evaluate" = "评价";
 
-"button.chat_thank" = "Thank you for your comments on this service. I wish you a happy life. Goodbye!";
+"button.chat_title" = "感谢您使用我们的服务，请为此次服务进行评价!";
 
-"button.complete" = "finish";
+"button.chat_thank" = "感谢您对本次服务做出评价，祝您生活愉快，再见!";
 
-"button.back" = "back";
+"button.complete" = "完成";
 
-"button.cancel" = "cancel";
+"button.back" = "返回";
 
-"button.sure" = "Determine";
+"button.cancel" = "取消";
 
-"button.recorder_normal" = "hold to talk";
+"button.sure" = "确定";
 
-"button.recorder_recording" = "Loosen and send";
+"button.recorder_normal" = "按住  说话";
 
-"button.recorder_want_cancel" = "release to cancel";
+"button.recorder_recording" = "松开 发送";
 
-"button.cancelsend" = "release to cancel";
+"button.recorder_want_cancel" = "松开手指 取消发送";
 
-"button.copy" = "copy";
+"button.cancelsend" = "手指上滑 取消发送";
 
-"button.delete" = "delete";
+"button.copy" = "复制";
 
-"button.send" = "send";
+"button.delete" = "删除";
 
-"button.ConvertText" = "voice to text";
+"button.send" = "发送";
 
-"button.sendAgain" = "Send message again";
+"button.ConvertText" = "转文字";
 
-"button.receiver" = "receiver";
+"button.sendAgain" = "重新发送消息Y/N";
 
-"button.speaker" = "speaker";
+"button.receiver" = "听筒";
 
-"button.leaveMessage" = "leaveMessage";
+"button.speaker" = "扬声器";
 
-"button.signOut" = "quit";
+"button.leaveMessage" = "留言";
 
-"button.yeshelp" = "helpfulness";
+"button.signOut" = "退出";
 
-"button.nohelp" = "useless";
+"button.yeshelp" = "有帮助";
 
-"button.set" = "setting";
+"button.nohelp" = "无帮助";
 
-"title.thanks_yes" = "We are very happy to solve the problem for you!";
+"button.set" = "设置";
 
-"title.thanks_no" = "We are very sorry that I have not solved your problem!";
+"title.thanks_yes" = "很高兴为您解决了问题!";
 
-"title.people" = "Customer service";
+"title.thanks_no" = "非常抱歉没有解决您的问题!";
 
-"title.people_now" = "Customer service online";
+"title.people" = "客服";
 
-"title.people_isleave" = "Customer service end";
+"title.people_now" = "客服在线";
 
-"title.people_isline" = "Customer service off-line";
+"title.people_isleave" = "客服结束会话";
 
-"title.now_robit" = "Robot service";
+"title.people_isline" = "客服离线";
 
-"title.other_writing" = "typing...";
+"title.now_robit" = "机器人客服";
 
-"title.line_up" = "The current number of queues";
+"title.other_writing" = "对方正在输入...";
 
-"title.connection" = "wainting link";
+"title.line_up" = "目前排队人数";
 
-"title.type" = "Choose the type or business department you consulted (corresponding skill group)";
+"title.connection" = "等待接入";
 
-"title.prompt" = "Prompt";
+"title.type" = "选择您咨询的类型或业务部门(对应技能组)";
 
-"title.savePicture" = "Save Picture";
+"title.prompt" = "提示";
 
-"title.statement" = "Doing this will delete this message and cannot restore it. Do you want to delete it?";
+"title.savePicture" = "保存图片";
 
-"title.speakS" = "Talking too short";
+"title.statement" = "进行此操作将删除此消息且不能恢复，是否执行删除";
 
-"title.apeakL" = "Talking too long";
+"title.speakS" = "说话时间太短";
 
-"title.schedule_faile" = "Other seat mandate failed";
+"title.speakL" = "说话时间太长";
 
-"title.schedule_notonline" = "Exclusive seats are not online";
+"title.schedule_faile" = "其他坐席授权失败";
 
-"title.sorryconfigurationiswrong" = "consult function cant be reached";
+"title.schedule_notonline" = "专属坐席不在线";
 
-"title.schedule_type" = "Select the type of schedule you consult";
+"title.sorryconfigurationiswrong" = "对不起，由于在线咨询配置错误，暂时无法进行咨询";
 
-"title.message prompts" = "The customer service is now offline, please consult later";
+"title.schedule_type" = "选择您咨询的日程管理类型";
 
-"title.iknow" = "i know";
+"title.messageprompts" = "客服目前已离线，请稍后咨询";
 
-"title.messageBoard" = "Message Board";
+"title.iknow" = "我知道了";
 
-"title.messageHeader" = "Please leave a message. We will contact you as soon as possible.";
+"title.messageBoard" = "留言板";
 
-"title.pleaseLeave" = "Please leave message ~";
+"title.messageHeader" = "请留言，我们将尽快联系您";
 
-"title.leaving" = "Leaving a message";
+"title.pleaseLeave" = "请留言~";
 
-"title.messageSuccess" = "Submit message successfully";
+"title.leaving" = "留 言";
 
-"title.messageFailure" = "Failed to submit message";
+"title.messageSuccess" = "提交留言成功";
 
-"title.messageContent" = "Please fill in the message";
+"title.messageFailure" = "提交留言失败";
 
-"title.requireItem" = "Is required";
+"title.messageContent" = "请填写留言内容";
 
-"title.uploaded" = "Uploaded";
+"title.requireItem" = "为必填项";
 
-"title.uploadFailure" = "Upload failure";
+"title.uploaded" = "已上传";
 
-"title.uploading" = "Uploading";
+"title.uploadFailure" = "上传失败";
 
-"title.downloads" = "Downloads";
+"title.uploading" = "上传中";
 
-"title.notDownloaded" = "Not Downloaded";
+"title.downloads" = "下载中";
 
-"title.downloaded" = "Downloaded";
+"title.notDownloaded" = "未下载";
 
-"title.phoneNumber" = "Phone number";
+"title.downloaded" = "已下载";
 
-"title.selection" = "Selection";
+"title.phoneNumber" = "手机号码";
 
-"title.required" = "Required";
+"title.selection" = "选填";
+
+"title.required" = "必填";
 
 "title.good_7moor" = "有问题 上客服";
 
@@ -151,44 +152,44 @@
 
 "title.contact_im" = "联系客服";
 
-"title.photoAuthority" = "Please allow the app to access your album in the ”Privacy - Settings“ option on the iPhone";
+"title.photoAuthority" = "请在iPhone的“隐私-设置”选项中，允许app访问您的相册";
 
-"title.chatBegin" = "Start conversation";
+"title.chatBegin" = "开始会话";
 
-"title.chatFinish_reopen" = "The current session has been closed, whether to reopen the session";
+"title.chatFinish_reopen" = "当前会话已经关闭,是否重新开启会话";
 
-"title.transferAgent" = "Transfer to other agent";
+"title.transferAgent" = "转其他坐席";
 
-"title.robot_evaluation" = "Evaluation of robot services";
+"title.robot_evaluation" = "评价机器人服务";
 
-"title.robot_evaluation_ok" = "Robot evaluation is successful";
+"title.robot_evaluation_ok" = "机器人评价成功";
 
-"title.robot_evaluation_fail" = "Robot evaluation failed";
+"title.robot_evaluation_fail" = "机器人评价失败";
 
-"title.evaluation_remind" = "Not configured satisfaction";
+"title.evaluation_remind" = "未配置满意度";
 
-"title.evaluation_select" = "Please select satisfaction";
+"title.evaluation_select" = "请选择满意度";
 
-"title.evaluation_label" = "Please select the satisfaction evaluation label";
+"title.evaluation_label" = "请选择满意度评价标签";
 
-"title.evaluation_reason" = "Please fill in the reason for satisfaction evaluation";
+"title.evaluation_reason" = "请填写满意度评价原因";
 
-"title.evaluation_timeout" = "Review timed out";
+"title.evaluation_timeout" = "评价已超时";
 
-"title.creatConversation" = "Establishing a conversation, please wai";
+"title.creatConversation" = "正在建立会话中,请稍后";
 
-"title.mayBeNumber" = "May be a phone number";
+"title.mayBeNumber" = "可能是个电话号码";
 
-"title.isBeginLeave" = "Message is being submitted, please do not click repeatedly";
+"title.isBeginLeave" = "正在提交留言，请勿重复点击";
 
-"title.autonText_fail" = "Failed to convert text, please click to convert again";
+"title.autonText_fail" = "转换文字失败,请点击重新转换";
 
-"title.chat_question_fail" = "Failed to send!";
+"title.chat_question_fail" = "发送失败!";
 
-"button.call" = "call";
+"button.call" = "呼叫";
 
-"button.solved_ok" = "solved";
+"button.solved_ok" = "已解决";
 
-"button.solved_fail" = "unsolved";
+"button.solved_fail" = "未解决";
 
-"button.submit.review" = "Submit review";
+"button.submit.review" = "提交评价";
