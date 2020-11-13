@@ -516,6 +516,7 @@
 		65B1A4F3255D198E0023F349 /* QMTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B1A36B255D198C0023F349 /* QMTextAttachment.m */; };
 		65B1A584255D2F3B0023F349 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B1A583255D2F3A0023F349 /* Assets.xcassets */; };
 		65B1A585255D2F3B0023F349 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B1A583255D2F3A0023F349 /* Assets.xcassets */; };
+		65FBD0D0255E2A2200FBC92E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 65FBD0CE255E2A2200FBC92E /* Localizable.strings */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9A4CE07AF204964AEB60C404 /* libPods-tctmass-tctmassTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6F815F3AA95DB3F517B816 /* libPods-tctmass-tctmassTests.a */; };
 /* End PBXBuildFile section */
@@ -1072,6 +1073,8 @@
 		65EDBCE12554E928005991D9 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		65EDBCED2554ED1E005991D9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		65EDBCF22554ED3D005991D9 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		65FBD0CF255E2A2200FBC92E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = tctmass/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		65FBD0D5255E2C0E00FBC92E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "tctmass/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		71DCBFAA693BBCB59292075F /* Pods-tctmass-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tctmass-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-tctmass-tvOSTests/Pods-tctmass-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = tctmass/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82583C064764AFE7844CF41F /* Pods-tctmass.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tctmass.release.xcconfig"; path = "Target Support Files/Pods-tctmass/Pods-tctmass.release.xcconfig"; sourceTree = "<group>"; };
@@ -1150,6 +1153,7 @@
 		13B07FAE1A68108700A75B9A /* tctmass */ = {
 			isa = PBXGroup;
 			children = (
+				65FBD0CE255E2A2200FBC92E /* Localizable.strings */,
 				65B1A583255D2F3A0023F349 /* Assets.xcassets */,
 				65B1A53B255D22090023F349 /* PrefixHeader.pch */,
 				65B1A2CB255D198B0023F349 /* QMChatRoom */,
@@ -2322,6 +2326,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -2352,6 +2357,7 @@
 				65B1A36C255D198C0023F349 /* QMEmoticon.bundle in Resources */,
 				65B1A374255D198C0023F349 /* MJRefresh.bundle in Resources */,
 				6517A77B253E8BB20063ED96 /* bundle in Resources */,
+				65FBD0D0255E2A2200FBC92E /* Localizable.strings in Resources */,
 				65B1A3A6255D198C0023F349 /* TZImagePickerController.bundle in Resources */,
 				65B1A36E255D198C0023F349 /* expressionImage.plist in Resources */,
 				65B1A584255D2F3B0023F349 /* Assets.xcassets in Resources */,
@@ -3171,6 +3177,18 @@
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		65FBD0CE255E2A2200FBC92E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65FBD0CF255E2A2200FBC92E /* en */,
+				65FBD0D5255E2C0E00FBC92E /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {

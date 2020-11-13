@@ -1,0 +1,193 @@
+/* 
+  Localizable.strings
+  IMSDK-OC
+  Created by lishuijiao on 2018/5/11.
+  Copyright © 2018年 HCF. All rights reserved.
+*/
+"button.logout" = "exit";
+
+"button.topeople" = "turn artficial";
+
+"button.chat_img" = "picture";
+
+"button.chat_file" = "file";
+
+"button.chat_question" = "Commonproblems";
+
+"button.chat_music" = "music";
+
+"button.chat_video" = "video";
+
+"button.chat_other" = "other";
+
+"button.chat_evaluate" = "evaluation";
+
+"button.chat_title" = "Thank you for using our service. Please evaluate this service.";
+
+"button.chat_thank" = "Thank you for your comments on this service. I wish you a happy life. Goodbye!";
+
+"button.complete" = "finish";
+
+"button.back" = "back";
+
+"button.cancel" = "cancel";
+
+"button.sure" = "Determine";
+
+"button.recorder_normal" = "hold to talk";
+
+"button.recorder_recording" = "Loosen and send";
+
+"button.recorder_want_cancel" = "release to cancel";
+
+"button.cancelsend" = "release to cancel";
+
+"button.copy" = "copy";
+
+"button.delete" = "delete";
+
+"button.send" = "send";
+
+"button.ConvertText" = "voice to text";
+
+"button.sendAgain" = "Send message again";
+
+"button.receiver" = "receiver";
+
+"button.speaker" = "speaker";
+
+"button.leaveMessage" = "leaveMessage";
+
+"button.signOut" = "quit";
+
+"button.yeshelp" = "helpfulness";
+
+"button.nohelp" = "useless";
+
+"button.set" = "setting";
+
+"title.thanks_yes" = "We are very happy to solve the problem for you!";
+
+"title.thanks_no" = "We are very sorry that I have not solved your problem!";
+
+"title.people" = "Customer service";
+
+"title.people_now" = "Customer service online";
+
+"title.people_isleave" = "Customer service end";
+
+"title.people_isline" = "Customer service off-line";
+
+"title.now_robit" = "Robot service";
+
+"title.other_writing" = "typing...";
+
+"title.line_up" = "The current number of queues";
+
+"title.connection" = "wainting link";
+
+"title.type" = "Choose the type or business department you consulted (corresponding skill group)";
+
+"title.prompt" = "Prompt";
+
+"title.savePicture" = "Save Picture";
+
+"title.statement" = "Doing this will delete this message and cannot restore it. Do you want to delete it?";
+
+"title.speakS" = "Talking too short";
+
+"title.apeakL" = "Talking too long";
+
+"title.schedule_faile" = "Other seat mandate failed";
+
+"title.schedule_notonline" = "Exclusive seats are not online";
+
+"title.sorryconfigurationiswrong" = "consult function cant be reached";
+
+"title.schedule_type" = "Select the type of schedule you consult";
+
+"title.message prompts" = "The customer service is now offline, please consult later";
+
+"title.iknow" = "i know";
+
+"title.messageBoard" = "Message Board";
+
+"title.messageHeader" = "Please leave a message. We will contact you as soon as possible.";
+
+"title.pleaseLeave" = "Please leave message ~";
+
+"title.leaving" = "Leaving a message";
+
+"title.messageSuccess" = "Submit message successfully";
+
+"title.messageFailure" = "Failed to submit message";
+
+"title.messageContent" = "Please fill in the message";
+
+"title.requireItem" = "Is required";
+
+"title.uploaded" = "Uploaded";
+
+"title.uploadFailure" = "Upload failure";
+
+"title.uploading" = "Uploading";
+
+"title.downloads" = "Downloads";
+
+"title.notDownloaded" = "Not Downloaded";
+
+"title.downloaded" = "Downloaded";
+
+"title.phoneNumber" = "Phone number";
+
+"title.selection" = "Selection";
+
+"title.required" = "Required";
+
+"title.good_7moor" = "Call customer service if you have any questions";
+
+"title.introduction" = "contant online customer in time\n video、voice、type、expression、photo、file \n no problem！";
+
+"title.contact_im" = "Let's go";
+
+"title.photoAuthority" = "Please allow the app to access your album in the ”Privacy - Settings“ option on the iPhone";
+
+"title.chatBegin" = "Start conversation";
+
+"title.chatFinish_reopen" = "The current session has been closed, whether to reopen the session";
+
+"title.transferAgent" = "Transfer to other agent";
+
+"title.robot_evaluation" = "Evaluation of robot services";
+
+"title.robot_evaluation_ok" = "Robot evaluation is successful";
+
+"title.robot_evaluation_fail" = "Robot evaluation failed";
+
+"title.evaluation_remind" = "Not configured satisfaction";
+
+"title.evaluation_select" = "Please select satisfaction";
+
+"title.evaluation_label" = "Please select the satisfaction evaluation label";
+
+"title.evaluation_reason" = "Please fill in the reason for satisfaction evaluation";
+
+"title.evaluation_timeout" = "Review timed out";
+
+"title.creatConversation" = "Establishing a conversation, please wai";
+
+"title.mayBeNumber" = "May be a phone number";
+
+"title.isBeginLeave" = "Message is being submitted, please do not click repeatedly";
+
+"title.autonText_fail" = "Failed to convert text, please click to convert again";
+
+"title.chat_question_fail" = "Failed to send!";
+
+"button.call" = "call";
+
+"button.solved_ok" = "solved";
+
+"button.solved_fail" = "unsolved";
+
+"button.submit.review" = "Submit review";
