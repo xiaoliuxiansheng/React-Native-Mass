@@ -25,6 +25,8 @@
 
 @property (nonatomic, strong) UIButton *button;
 
+@property (nonatomic, strong) UIButton *logoutButton;
+
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
 @property (nonatomic, assign) BOOL isPushed;
@@ -119,12 +121,12 @@
 - (void)layoutView {
   // 注销
       self.logoutButton = [UIButton buttonWithType:UIButtonTypeSystem];
-      self.logoutButton.frame = CGRectMake(0, 0, 50, 30);
+      self.logoutButton.frame = CGRectMake(20, 20, 50, 30);
       self.logoutButton.titleLabel.font = [UIFont systemFontOfSize:16];
       [self.logoutButton setTitle:NSLocalizedString(@"button.logout", nil) forState:UIControlStateNormal];
       [self.logoutButton setTitleColor:[UIColor colorWithRed:13/255.0 green:139/255.0 blue:249/255.0 alpha:1] forState:UIControlStateNormal];
       [self.logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
-      self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.logoutButton];
+     [self.view addSubview:self.logoutButton];
 
     self.imageView = [[UIImageView alloc] init];
     self.imageView.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 236 * kIphone6sScaleWidth)/2, 55 * kIphone6sScaleWidth, 236 * kIphone6sScaleWidth, 250 * kIphone6sScaleWidth);
@@ -153,7 +155,7 @@
     [self.button setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
     [self.button setTitle:NSLocalizedString(@"title.contact_im", nil) forState:UIControlStateNormal];
     [self.button setTitleColor:[UIColor colorWithRed:0/255.0 green:183/255.0 blue:255/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+  [self.button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.button];
 
     // 建议使用网络指示器
@@ -171,9 +173,14 @@
 // 注销事件
 - (void)logoutAction {
         NSLog(@"不应该显示满意度评价弹框");
-        [self popVC];
+//  [self.navigationController popViewControllerAnimated:YES];
+//  [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+//  [self.navigationController setNavigationBarHidden:NO setNavigationBarHidden:NO];
 }
 - (void)popVC {
+  
+//  [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)buttonAction:(UIButton *)sender {
