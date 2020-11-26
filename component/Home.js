@@ -35,7 +35,7 @@ import {observer, inject} from 'mobx-react';
 import {Drawer as DrawerAnt, Toast, portal, ActivityIndicator} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import SplashScreen from 'react-native-splash-screen'
-
+import Modal from 'react-native-modal'
 const {StatusBarManager} = NativeModules;
 
 @inject("homeStore")
@@ -121,7 +121,8 @@ export default class Home extends Component {
             value: undefined,
             showBar: null,
             lastBackPressed: 0,
-            ActivityIndicatorShow: false
+            ActivityIndicatorShow: false,
+            isShowSearch: false
         };
     }
 
@@ -168,11 +169,23 @@ export default class Home extends Component {
     }
     // 取消搜索地址框
     cancelSearch = () => {
+        // antdesign drawer的bug 当使用这个modal时 会触发anddesign drawer
         this.drawerants.closeDrawer()
+        setTimeout(()=> {
+            this.setState({
+                isShowSearch:false
+            })
+        },250)
     }
     // 选择对应地址
     handleSelectItem = async (item) => {
+        // antdesign drawer的bug 当使用这个modal时 会触发anddesign drawer
         this.drawerants.closeDrawer()
+        setTimeout(()=> {
+            this.setState({
+                isShowSearch:false
+            })
+        },250)
         const {handleSaveDeparture, handleSaveDestination} = this.props.homeStore
         if (this.state.locationType === 1) {
             this.setState({
@@ -203,7 +216,7 @@ export default class Home extends Component {
     handelSearchPlace = async (type) => {
         this.setState({
             searchData: [],
-            showBar: 1
+            isShowSearch: true
         })
         if (+type === 1) {
             this.setState({
@@ -416,68 +429,6 @@ export default class Home extends Component {
             statusBarHeight = StatusBar.currentHeight;
         }
         const {defineTab, defineDestination} = this.props.homeStore
-        const sidebar = (
-            <View style={[styles.searchplace, {paddingTop: statusBarHeight}]}>
-                <StatusBar
-                    animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden 
-                    hidden={false}  //是否隐藏状态栏。 
-                    backgroundColor={'rgba(0, 41, 84, 1.000)'} //状态栏的背景色 
-                    translucent={true}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。 
-                    barStyle={'light-content'}/>
-                <View style={styles.searchviewTitle}>
-                    <TextInput
-                        style={[styles.searchviewsearch]}
-                        onChangeText={text => this.onChangeText(text)}
-                        placeholder={+this.state.locationType === 1 ? '请输入起点' : '请输入终点'}
-                        defaultValue={this.state.searchName}
-                        allowFontScaling={false}
-                        multiline={false}
-                    />
-                    <TouchableWithoutFeedback onPress={this.cancelSearch}>
-                        <Text style={styles.searchviewsearchtext}>取消</Text>
-                    </TouchableWithoutFeedback>
-                </View>
-                {
-                    <ScrollView
-                        style={styles.searchItemList}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        {
-                            this.state.searchData.map((item, index) => {
-                                return (
-                                    <TouchableWithoutFeedback onPress={this.handleSelectItem.bind(this, item)}>
-                                        <View style={styles.searchItem} key={index}>
-                                            <View style={styles.searchItemLeft}>
-                                                {
-                                                    item.isSelected &&
-                                                    <Fontisto name='history' size={10} color='#fff'></Fontisto>
-                                                }
-                                                {
-                                                    !item.isSelected &&
-                                                    <Ionicons name='ios-location' size={10} color='#fff'></Ionicons>
-
-                                                }
-                                            </View>
-                                            <View style={styles.searchItemRight}>
-                                                <Text style={styles.searchItemname}>
-                                                    {item.name}
-                                                </Text>
-                                                <Text style={styles.searchItemaddress}>
-                                                    {item.adname} {item.address}
-                                                </Text>
-                                            </View>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                )
-                            })
-                        }
-                        {
-                            this.state.ActivityIndicatorShow && <ActivityIndicator color="white"/>
-                        }
-                    </ScrollView>
-                }
-            </View>
-        );
         const sidebartwo = (
             <View style={[styles.drawerBox]}>
                 <View style={styles.drawerBoxContent}>
@@ -527,12 +478,12 @@ export default class Home extends Component {
         return (
             // 对安卓IOS刘海屏、异形屏 进行适配
             <DrawerAnt
-                sidebar={this.state.showBar === 1 ? sidebar : sidebartwo}
+                sidebar={sidebartwo}
                 position="enum{'left'"
                 open={false}
                 drawerRef={el => (this.drawerants = el)}
                 drawerBackgroundColor="#fff"
-                drawerWidth={this.state.showBar === 1 ? Dimensions.get('window').width / 5 * 4 : Dimensions.get('window').width / 5 * 3}
+                drawerWidth={Dimensions.get('window').width / 5 * 3}
             >
                 <SafeAreaView
                     style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
@@ -592,11 +543,12 @@ export default class Home extends Component {
                             <View style={styles.InputAddressHead}>
                                 <TouchableWithoutFeedback onPress={this.handleType.bind(this, 1)}>
                                     <Text
-                                        style={[styles.InputAddressText, {color: this.state.travelType === 1 ? 'rgb(255, 198, 69)' : 'rgba(53, 54, 55, 1.000)'}]}>现在</Text>
+                                        style={[styles.InputAddressText, {color: this.state.travelType === 1 ? '#0A2463' : '#0C286C'}, {fontSize: this.state.travelType === 1 ? 18 : 16}, {fontWeight: this.state.travelType === 1 ? '400' : '200'}]}>现在</Text>
+
                                 </TouchableWithoutFeedback>
                                 <TouchableWithoutFeedback onPress={this.handleType.bind(this, 2)}>
                                     <Text
-                                        style={[styles.InputAddressText, {color: this.state.travelType === 2 ? 'rgb(255, 198, 69)' : 'rgba(53, 54, 55, 1.000)'}]}>预约</Text>
+                                        style={[styles.InputAddressText, {color: this.state.travelType === 2 ? '#0A2463' : '#0C286C'}, {fontSize: this.state.travelType === 2 ? 18 : 16}, {fontWeight: this.state.travelType === 2 ? '400' : '200'}]}>预约</Text>
                                 </TouchableWithoutFeedback>
                             </View>
                             {
@@ -626,12 +578,12 @@ export default class Home extends Component {
                                     </View>
                                     <View style={styles.InputAddressBodyRight}>
                                         <TouchableWithoutFeedback onPress={this.handleLinkapp}>
-                                        <View
-                                            style={[styles.InputAddressBodyRightBox, {backgroundColor: this.state.destination === '' || this.state.departure === '' ? '#eee' : 'rgba(30, 143, 245, 1.000)'}]}>
+                                            <View
+                                                style={[styles.InputAddressBodyRightBox, {backgroundColor: this.state.destination === '' || this.state.departure === '' ? '#eee' : 'rgba(30, 143, 245, 1.000)'}]}>
 
                                                 <MaterialCommunityIcons name="navigation" size={20} color='#fff'
                                                 ></MaterialCommunityIcons>
-                                        </View>
+                                            </View>
                                         </TouchableWithoutFeedback>
                                     </View>
                                 </View>
@@ -658,6 +610,62 @@ export default class Home extends Component {
                             {/*}*/}
                         </View>
                     </View>
+                    <Modal isVisible={this.state.isShowSearch} swipeDirection='down' style={styles.searchmodal}>
+                        <View style={[styles.searchplace]}>
+                            <View style={styles.searchviewTitle}>
+                                <TextInput
+                                    style={[styles.searchviewsearch]}
+                                    onChangeText={text => this.onChangeText(text)}
+                                    placeholder={+this.state.locationType === 1 ? '请输入起点' : '请输入终点'}
+                                    defaultValue={this.state.searchName}
+                                    allowFontScaling={false}
+                                    multiline={false}
+                                />
+                                <TouchableWithoutFeedback onPress={this.cancelSearch}>
+                                    <Text style={styles.searchviewsearchtext}>取消</Text>
+                                </TouchableWithoutFeedback>
+                            </View>
+                            {
+                                <ScrollView
+                                    style={styles.searchItemList}
+                                    showsVerticalScrollIndicator={false}
+                                >
+                                    {
+                                        this.state.searchData.map((item, index) => {
+                                            return (
+                                                <TouchableWithoutFeedback onPress={this.handleSelectItem.bind(this, item)}>
+                                                    <View style={styles.searchItem} key={index}>
+                                                        <View style={styles.searchItemLeft}>
+                                                            {
+                                                                item.isSelected &&
+                                                                <Fontisto name='history' size={10} color='#fff'></Fontisto>
+                                                            }
+                                                            {
+                                                                !item.isSelected &&
+                                                                <Ionicons name='ios-location' size={10} color='#fff'></Ionicons>
+
+                                                            }
+                                                        </View>
+                                                        <View style={styles.searchItemRight}>
+                                                            <Text style={styles.searchItemname}>
+                                                                {item.name}
+                                                            </Text>
+                                                            <Text style={styles.searchItemaddress}>
+                                                                {item.adname} {item.address}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            )
+                                        })
+                                    }
+                                    {
+                                        this.state.ActivityIndicatorShow && <ActivityIndicator color="white"/>
+                                    }
+                                </ScrollView>
+                            }
+                        </View>
+                    </Modal>
                 </SafeAreaView>
             </DrawerAnt>
         )
@@ -677,6 +685,16 @@ const styles = StyleSheet.create({
     person: {
         left: 15,
         flex: 1,
+    },
+    searchmodal: {
+        marginLeft:0,
+        marginTop:0,
+        marginBottom:0,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     message: {
         flex: 1,
@@ -789,7 +807,8 @@ const styles = StyleSheet.create({
     InputAddressText: {
         flex: 1,
         textAlign: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        fontWeight: '200'
     },
     textInput: {
         flex: 8,
@@ -876,13 +895,14 @@ const styles = StyleSheet.create({
     },
     searchplace: {
         flex: 1,
+        width: '100%',
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: 'rgba(0, 41, 84, 1.000)',
-        paddingBottom: 0
+        paddingBottom: 20
     },
     searchviewTitle: {
-        paddingTop: 30,
+        paddingTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -918,7 +938,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     searchItemList: {
-        marginTop: 20,
+        marginTop: 10,
         paddingBottom: 50,
         backgroundColor: 'rgba(0, 41, 84, 1.000)'
     },
