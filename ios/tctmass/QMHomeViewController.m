@@ -173,13 +173,13 @@
 // 注销事件
 - (void)logoutAction {
         NSLog(@"不应该显示满意度评价弹框");
-//  [self.navigationController popViewControllerAnimated:YES];
-//  [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+ [self.navigationController popViewControllerAnimated:YES];
+ [self.navigationController setNavigationBarHidden:YES animated:YES];
+//     [self.navigationController popViewControllerAnimated:YES];
 //  [self.navigationController setNavigationBarHidden:NO setNavigationBarHidden:NO];
 }
 - (void)popVC {
-  
+
 //  [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }

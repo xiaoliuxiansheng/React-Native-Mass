@@ -523,7 +523,6 @@ export default class Home extends Component {
                                                         key={index}
                                                         style={[styles.scrooltab, {color: defineTab === index + 1 ? 'rgb(255, 198, 69)' : '#ECECEC'}]}>{item.name}</Text>
                                                 </TouchableWithoutFeedback>
-                                                // </ScrollView>
                                             )
                                         })
                                     }
@@ -537,7 +536,6 @@ export default class Home extends Component {
                                 </TouchableWithoutFeedback>
                             </View>
                         </View>
-                        {/*<AllModules selectTab={defineTab}></AllModules>*/}
                         <AllModules selectTab={1}></AllModules>
                         <View style={[styles.InputAddress]}>
                             <View style={styles.InputAddressHead}>
@@ -610,9 +608,12 @@ export default class Home extends Component {
                             {/*}*/}
                         </View>
                     </View>
-                    <Modal isVisible={this.state.isShowSearch} swipeDirection='down' style={styles.searchmodal}>
+                    <Modal isVisible={this.state.isShowSearch} swipeDirection='down' style={[styles.searchmodal]}>
+                        <SafeAreaView
+                            style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
+                        >
                         <View style={[styles.searchplace]}>
-                            <View style={styles.searchviewTitle}>
+                            <View style={[styles.searchviewTitle]}>
                                 <TextInput
                                     style={[styles.searchviewsearch]}
                                     onChangeText={text => this.onChangeText(text)}
@@ -622,7 +623,7 @@ export default class Home extends Component {
                                     multiline={false}
                                 />
                                 <TouchableWithoutFeedback onPress={this.cancelSearch}>
-                                    <Text style={styles.searchviewsearchtext}>取消</Text>
+                                    <Text style={styles.searchviewsearchtext}>取消{statusBarHeight}</Text>
                                 </TouchableWithoutFeedback>
                             </View>
                             {
@@ -665,6 +666,7 @@ export default class Home extends Component {
                                 </ScrollView>
                             }
                         </View>
+                        </SafeAreaView>
                     </Modal>
                 </SafeAreaView>
             </DrawerAnt>
@@ -692,9 +694,9 @@ const styles = StyleSheet.create({
         marginBottom:0,
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-        flex:1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        // flex:1,
+        // alignItems: 'center',
+        // justifyContent: 'center'
     },
     message: {
         flex: 1,
@@ -902,11 +904,12 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     searchviewTitle: {
-        paddingTop: 20,
+        // paddingTop: 20,
+        // paddingTop:30,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 65
+        height: 55
     },
     searchviewsearch: {
         textAlign: 'left',
