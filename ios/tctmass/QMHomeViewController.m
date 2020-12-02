@@ -1,20 +1,12 @@
-//
-//  QMHomeViewController.m
-//  IMSDK-OC
-//
-//  Created by haochongfeng on 2017/8/7.
-//  Copyright © 2017年 HCF. All rights reserved.
-//
 
 #import "QMHomeViewController.h"
 #import "QMChatRoomViewController.h"
 #import <QMLineSDK/QMLineSDK.h>
-
+#import "AppDelegate.h"
 #import "QMChatRoomGuestBookViewController.h"
 #import "QMAlert.h"
 #import "QMManager.h"
 #import "QMWeiXinDateManager.h"
-
 @interface QMHomeViewController () <QMKRegisterDelegate>
 
 @property (nonatomic, strong) UIImageView *imageView;
@@ -34,6 +26,8 @@
 @property (nonatomic, assign) BOOL isConnecting;
 
 @property (nonatomic, copy) NSDictionary * dictionary;
+
+@property (nonatomic, assign) BOOL isQuit;
 
 @end
 
@@ -114,22 +108,26 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+  if (self.isQuit) {
+    self.navigationController.navigationBarHidden = YES;
+  } else {
     self.navigationController.navigationBarHidden = NO;
+  }
     self.isPushed = YES;
 }
 
 - (void)layoutView {
   // 注销
       self.logoutButton = [UIButton buttonWithType:UIButtonTypeSystem];
-      self.logoutButton.frame = CGRectMake(20, 20, 50, 30);
+      self.logoutButton.frame = CGRectMake(5, 55 * kIphone6sScaleWidth, 50, 30);
       self.logoutButton.titleLabel.font = [UIFont systemFontOfSize:16];
-      [self.logoutButton setTitle:NSLocalizedString(@"button.logout", nil) forState:UIControlStateNormal];
+      [self.logoutButton setTitle:NSLocalizedString(@"button.quit", nil) forState:UIControlStateNormal];
       [self.logoutButton setTitleColor:[UIColor colorWithRed:13/255.0 green:139/255.0 blue:249/255.0 alpha:1] forState:UIControlStateNormal];
       [self.logoutButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
      [self.view addSubview:self.logoutButton];
 
     self.imageView = [[UIImageView alloc] init];
-    self.imageView.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 236 * kIphone6sScaleWidth)/2, 55 * kIphone6sScaleWidth, 236 * kIphone6sScaleWidth, 250 * kIphone6sScaleWidth);
+    self.imageView.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width - 236 * kIphone6sScaleWidth)/2, 55 * kIphone6sScaleWidth+30, 236 * kIphone6sScaleWidth, 250 * kIphone6sScaleWidth);
     self.imageView.image = [UIImage imageNamed:@"logo"];
     [self.view addSubview:self.imageView];
 
@@ -172,17 +170,13 @@
 
 // 注销事件
 - (void)logoutAction {
-        NSLog(@"不应该显示满意度评价弹框");
- [self.navigationController popViewControllerAnimated:YES];
- [self.navigationController setNavigationBarHidden:YES animated:YES];
-//     [self.navigationController popViewControllerAnimated:YES];
-//  [self.navigationController setNavigationBarHidden:NO setNavigationBarHidden:NO];
+   NSLog(@"退出");
+  // isquit变量 便于在viewWillDisappear事件中判断是否是退出还是进入聊天室（控制状态栏是否显示）
+   self.isQuit = YES;
+   [self.navigationController popViewControllerAnimated:YES];
 }
-- (void)popVC {
 
-//  [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
-}
+// 跳转至聊天室
 - (void)buttonAction:(UIButton *)sender {
     [self.indicatorView startAnimating];
 

@@ -14,12 +14,6 @@ RCT_EXPORT_MODULE();
      QMHomeViewController *one = [[QMHomeViewController alloc]init];
       AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
       [app.nav pushViewController:one animated:YES];
-//     QMHomeViewController *one = [[QMHomeViewController alloc]init];
-//      AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//     [app.nav setNavigationBarHidden:NO animated:YES];
-//     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//           [app.nav pushViewController:one animated:YES];
-//         });
     });
  }
 @end

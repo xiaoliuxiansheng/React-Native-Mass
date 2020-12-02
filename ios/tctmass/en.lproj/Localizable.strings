@@ -6,6 +6,8 @@
 */
 "button.logout" = "exit";
 
+"button.quit" = "quit";
+
 "button.topeople" = "turn artficial";
 
 "button.chat_img" = "picture";

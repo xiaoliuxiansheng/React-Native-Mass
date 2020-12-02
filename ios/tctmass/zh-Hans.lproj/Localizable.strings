@@ -8,6 +8,8 @@
 
 "button.logout" = "注销";
 
+"button.quit" = "退出";
+
 "button.topeople" = "转人工";
 
 "button.chat_img" = "图片";
