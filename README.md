@@ -2,14 +2,8 @@
 # Installation【安装】
 在根目录执行
 ```
-yarn 
+yarn && cd ios && pod install && cd ..
 ```
-
-在ios目录执行
-```
-pod install
-```
-
 运行
 ```
 yarn ios || yarn android
