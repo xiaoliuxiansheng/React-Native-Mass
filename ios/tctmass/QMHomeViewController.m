@@ -108,6 +108,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+  // 聊天界面需要展示navigationBarHidden 退出至react native后需要隐藏状态栏
   if (self.isQuit) {
     self.navigationController.navigationBarHidden = YES;
   } else {
