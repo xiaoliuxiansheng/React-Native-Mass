@@ -7130,13 +7130,6 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-camera@3.32.0:
-  version "3.32.0"
-  resolved "https://registry.npm.taobao.org/react-native-camera/download/react-native-camera-3.32.0.tgz#ca11ad6b19dd9da64860a4a01cbdde1a6474554e"
-  integrity sha1-yhGtaxndnaZIYKSgHL3eGmR0VU4=
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-collapsible@^1.5.2:
   version "1.5.3"
   resolved "https://registry.npm.taobao.org/react-native-collapsible/download/react-native-collapsible-1.5.3.tgz#d6bc7274ae8f40f7688cca23ededa263e6c81c63"

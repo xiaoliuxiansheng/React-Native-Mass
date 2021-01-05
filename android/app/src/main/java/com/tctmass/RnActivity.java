@@ -18,6 +18,7 @@ import com.moor.imkf.IMChatManager;
 import com.moor.imkf.model.entity.CardInfo;
 import com.moor.imkf.model.entity.NewCardInfo;
 import com.moor.imkf.model.entity.NewCardInfoAttrs;
+import com.moor.imkf.requesturl.RequestUrl;
 import com.moor.imkf.utils.MoorUtils;
 
 import java.net.URLEncoder;
@@ -97,9 +98,11 @@ public class RnActivity extends AppCompatActivity implements View.OnClickListene
          * 修改会话页面 是否需要 emoji表情 按钮。
          */
 //        helper.setChatActivityEmoji(true);
+        RequestUrl.setRequestUrl(9939,
+                "172.51.215.154",
+                "http://172.51.215.153:9916/sdkChat ","http://172.51.215.153:9916/sdkChat ","");
 
-
-        helper.initSdkChat("7a6926e0-181a-11eb-b15d-054468910f6c", "android用户", "88888");
+        helper.initSdkChat("45612450-4b16-11eb-9dd9-3d39a2b3c5e6", "android用户", "88888");
     }
 
     /**

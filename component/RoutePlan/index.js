@@ -65,7 +65,7 @@ export default class index extends Component {
         const {departure, destination} = this.props.homeStore
         return (
             <SafeAreaView
-                style={[{paddingTop: statusBarHeight, flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
+                style={[{ flex: 1, backgroundColor: 'rgba(0, 41, 84, 1.000)'}]}
             >
                 <StatusBar
                     animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden 

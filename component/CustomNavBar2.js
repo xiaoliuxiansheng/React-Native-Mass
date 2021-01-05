@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Platform
 } from 'react-native';
 import React from 'react';
 import {Actions} from 'react-native-router-flux';
