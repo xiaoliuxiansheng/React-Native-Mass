@@ -241,7 +241,14 @@ export default class Home extends Component {
                 locationType: 2,
                 searchName: this.state.destination
             } )
-            await this.handelGetamapData()
+            if ( this.state.destination === '' ) {
+                const { defineDestination } = this.props.homeStore
+                if ( defineDestination && defineDestination.formatted_address ) {
+                    await this.handelGetamapData( defineDestination.formatted_address )
+                } else {
+                    await this.handelGetamapData()
+                }
+            }
             this.drawerants.openDrawer()
         }
     }
@@ -590,7 +597,7 @@ export default class Home extends Component {
                                                 style={[styles.InputAddressBodyRightBox, { backgroundColor: this.state.destination === '' || this.state.departure === '' ? '#eee' : 'rgba(30, 143, 245, 1.000)' }]}>
                                                 <MaterialCommunityIcons
                                                     name="navigation"
-                                                    size={20}
+                                                    size={16}
                                                     color='#fff'
                                                 />
                                             </View>
@@ -888,7 +895,7 @@ const styles = StyleSheet.create( {
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 5,
-        borderColor: 'rgba(211,234,254,1.000)'
+        borderColor: 'rgba(211,234,254,1.000)',
     },
     searchplace: {
         flex: 1,

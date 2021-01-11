@@ -105,7 +105,11 @@ export default class Index extends Component {
                     onPress={this.handleSelectItem.bind(this, item, index)}>
                     <View style={styles.packageItem}>
                       <View style={styles.packageItemLeft}>
-                        <View style={styles.packageItemLeftBox}>
+                        <View
+                            style={
+                              this.state.SelectPackNum !== index
+                                  ? styles.packageItemLeftBox
+                                  : styles.packageItemLeftBoxCheck}>
                           {this.state.SelectPackNum === index ? (
                             <Feather name="check" size={20} color="#FFFFFF" />
                           ) : null}
@@ -189,6 +193,13 @@ const styles = StyleSheet.create({
     height: 15,
     marginBottom: deviceWidth * 0.85 * 0.14,
   },
+  packageItemLeftBoxCheck: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+    height: 15,
+    marginBottom: deviceWidth * 0.85 * 0.14,
+  },
   packageItemRight: {
     flex: 1,
     alignItems: 'center',
@@ -201,7 +212,7 @@ const styles = StyleSheet.create({
   packageItemLeftThree: {
     color: '#FFFFFF',
     fontSize: 15,
-    marginLeft: 8,
+    marginLeft: 0,
   },
   packageItemLeftTwo: {
     marginBottom: deviceWidth * 0.85 * 0.02,

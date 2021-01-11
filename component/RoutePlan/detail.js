@@ -181,7 +181,11 @@ export default class EventsExample extends Component {
     hide() {
         this.out()
     }
-
+    // 动态样式
+    handleBackStyle = (index) => {
+        const styles = ['#148E9B','#0C6196','#CECECE']
+        return {backgroundColor: styles[index%3]}
+    }
     render() {
         let statusBarHeight;
         if (Platform.OS === "ios") {
@@ -279,9 +283,9 @@ export default class EventsExample extends Component {
                                         this.props.RouteMsg.segments.map((step, stepindex) => {
                                             return (
                                                 stepindex < 5 &&
-                                                <View style={styles.PointListItemCenterBox} key={stepindex}>
+                                                <View style={[styles.PointListItemCenterBox]} key={stepindex}>
                                                     <View
-                                                        style={styles.MsgBoxCenterItem}>
+                                                        style={[styles.MsgBoxCenterItem,this.handleBackStyle(stepindex)]}>
                                                         {
                                                             step.bus.buslines.length > 0 ?
                                                                 <Text
@@ -350,7 +354,7 @@ export default class EventsExample extends Component {
                                 outputRange: [deviceHeight, 0]
                             }),
                         }]
-                    }, {opacity: this.state.opacitys}]}>
+                    }]}>
                         <View style={styles.DrawerBottomBigBox}>
                             <View style={[styles.MsgBoxContent, styles.DrawerMsgBoxContent]}>
                                 <View style={styles.MsgBoxContentHead}>
@@ -368,7 +372,7 @@ export default class EventsExample extends Component {
                                                 stepindex < 5 &&
                                                 <View style={styles.PointListItemCenterBox} key={stepindex}>
                                                     <View
-                                                        style={styles.MsgBoxCenterItem}>
+                                                        style={[styles.MsgBoxCenterItem,this.handleBackStyle(stepindex)]}>
                                                         {
                                                             step.bus.buslines.length > 0 ?
                                                                 <Text
@@ -423,14 +427,13 @@ export default class EventsExample extends Component {
                                                                 })
                                                             }
                                                         </View>
-                                                        <View style={styles.planItemRight}>
-                                                            {/*{Array.isArray(step.walking.steps[0].road)*/}
-                                                            {/*    ? <Text style={styles.planItemRightTitle}>未知地名</Text> :*/}
+                                                        <View style={[styles.planItemRight,{marginTop:-deviceWidth*0.015}]}>
                                                             <Text
                                                                 style={styles.planItemRightTitle}>{!Array.isArray(step.walking.steps[0].road) ? step.walking.steps[0].road : this.props.RouteMsg.segments[stepindex - 1].bus.buslines[0].arrival_stop.name}</Text>
-                                                            {/*}*/}
-                                                            <Text
-                                                                style={styles.planItemRightContent}>步行{step.walking.distance / 1000}公里（{this.secondToDate(step.walking.duration)})</Text>
+                                                            <View style={[{justifyContent:'center',height: deviceWidth * 0.15}]}>
+                                                                <Text
+                                                                    style={styles.planItemRightContent}>步行{step.walking.distance / 1000}公里（{this.secondToDate(step.walking.duration)})</Text>
+                                                            </View>
                                                         </View>
                                                     </View>
                                                 )
@@ -449,7 +452,7 @@ export default class EventsExample extends Component {
                                                         <View style={styles.planItemCenter}>
                                                             <View
                                                                 style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
-                                                            <View style={styles.planItemCenterBoxTypeOne}></View>
+                                                            <View style={[styles.planItemCenterBoxTypeOne,,{height:step.bus.buslines[0].type === '地铁线路' ? deviceWidth*0.35:deviceWidth*0.3}]}></View>
                                                             <View
                                                                 style={[styles.planItemCentercircular, styles.circularTypeTwo]}></View>
                                                             {
@@ -495,7 +498,7 @@ export default class EventsExample extends Component {
                                                             </View>
                                                             {
                                                                 step.walking.distance &&
-                                                                <View style={styles.planItemRightBottom}>
+                                                                <View style={[styles.planItemRightBottom]}>
                                                                     <AntDesign name='down'
                                                                                color='rgba(162, 162, 162, 1.000)'
                                                                                size={14}></AntDesign>
@@ -516,11 +519,13 @@ export default class EventsExample extends Component {
                                                                     <Text
                                                                         style={[styles.planItemRightTitle, {marginTop: deviceWidth * 0.03}]}>{step.bus.buslines[0].arrival_stop.name} 公交站</Text>
                                                             }
-                                                            {
-                                                                step.walking.distance &&
-                                                                <Text
-                                                                    style={styles.planItemRightContent}>换乘{step.walking.distance}米（{this.secondToDate(step.walking.duration)}）</Text>
-                                                            }
+                                                            <View style={{justifyContent:'center',height: deviceWidth * 0.15}}>
+                                                                {
+                                                                    step.walking.distance &&
+                                                                    <Text
+                                                                        style={styles.planItemRightContent}>换乘{step.walking.distance}米（{this.secondToDate(step.walking.duration)}）</Text>
+                                                                }
+                                                            </View>
                                                         </View>
                                                     </View>
                                                 )
@@ -568,7 +573,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingBottom: deviceWidth * 0.01,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc'
+        borderBottomColor: '#fff'
     },
     MsgBoxContentHeadtext: {
         fontSize: 14,
@@ -720,7 +725,8 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(253, 173, 46, 1.000)'
     },
     circularTypeTwo: {
-        borderColor: 'rgba(0, 152, 110, 1.000)'
+        borderColor: 'rgba(0, 152, 110, 1.000)',
+        marginTop: -deviceWidth * 0.005
     },
     planItemCentercirculartwo: {
         width: deviceWidth * 0.01,
@@ -733,7 +739,7 @@ const styles = StyleSheet.create({
         color: '#000'
     },
     planItemRightContent: {
-        marginTop: deviceWidth * 0.07,
+        // paddingTop: deviceWidth * 0.07,
         fontSize: 14,
         color: '#999'
     },
@@ -741,7 +747,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 131, 143, 1.000)',
         width: deviceWidth * 0.02,
         height: deviceWidth * 0.3,
-        marginTop: -deviceWidth * 0.01,
+        marginTop: -deviceWidth * 0.005,
         zIndex: -10
     },
     planItemRightHead: {
@@ -841,7 +847,7 @@ const styles = StyleSheet.create({
     modal: {
         height: deviceHeight,
         width: deviceWidth,
-        backgroundColor: 'rgba(0, 16, 30, 1.000)',
+        backgroundColor: 'rgba(0, 16, 30, 0.6)',
         justifyContent: 'flex-end'
     },
     modalContent: {

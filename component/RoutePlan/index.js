@@ -22,6 +22,7 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Modal from 'react-native-modal';
 import {inject, observer} from "mobx-react";
 import {Actions} from "react-native-router-flux";
@@ -97,12 +98,14 @@ export default class index extends Component {
                                         style={styles.HeaderCenterEnd}>{destination}</Text>
                                 </View>
                                 <View style={styles.HeaderRight}>
-                                    <Image source={require('../../images/Transfer.png')}></Image>
+                                    <View style={styles.Transfer}>
+                                        <MaterialCommunityIcons style={styles.TransferIcon} name='compare-vertical' color='#55A6FD' size={20}/>
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={styles.HeaderBtn}>
-                                <FontAwesome5 name='location-arrow' color='#fff' size={22}></FontAwesome5>
-                            </View>
+                                </View>
+                                <View style={styles.HeaderBtn}>
+                                    <FontAwesome5 name='location-arrow' color='#fff' size={22}></FontAwesome5>
+                                </View>
                         </View>
                         <View style={styles.Times}>
                             <Ionicons name='time-sharp' size={14} color='rgba(0, 152, 110, 1.000)'></Ionicons>
@@ -137,13 +140,13 @@ export default class index extends Component {
                                                                             <View style={styles.PointListItemCenterBox}
                                                                                   key={stepindex}>
                                                                                 <View
-                                                                                    style={styles.PointListItemCenterBoxStep}>
+                                                                                    style={[styles.PointListItemCenterBoxStep,this.handleBackStyle(stepindex)]}>
                                                                                     {
                                                                                         step.bus.buslines.length > 0 ?
                                                                                             <Text
-                                                                                                style={styles.PointListItemCenterText}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
+                                                                                                style={[styles.PointListItemCenterText,this.handleFontColor(stepindex)]}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
                                                                                             <Text
-                                                                                                style={styles.PointListItemCenterText}>步行</Text>
+                                                                                                style={[styles.PointListItemCenterText,this.handleFontColor(stepindex)]}>步行</Text>
                                                                                     }
                                                                                 </View>
                                                                                 {
@@ -224,7 +227,16 @@ export default class index extends Component {
             </SafeAreaView>
         )
     }
-
+    // 动态背景样式
+    handleBackStyle = (index) => {
+        const styles = [{backgroundColor:'#fff',borderWidth:1, borderColor:'#55A6FD'},{backgroundColor:'#148E9B'},{backgroundColor:'#0C6196'}]
+        return styles[index%3]
+    }
+    // 动态字体样式
+    handleFontColor = (index) => {
+        const styles = [{color:'#55A6FD'},{color:'#fff'},{color:'#fff'}]
+        return styles[index%3]
+    }
     // 地图规划 时间 秒转时分秒
     secondToDate = (result) => {
         var h = Math.floor(result / 3600) < 10 ? '0' + Math.floor(result / 3600) : Math.floor(result / 3600);
@@ -412,7 +424,24 @@ const styles = StyleSheet.create({
     },
     HeaderRight: {
         flex: 1.2,
-        alignItems: 'center'
+        alignItems: 'center',
+        // borderRadius: '50%',
+    },
+    Transfer: {
+        height: 18.5,
+        width: 18.5,
+        borderWidth:1,
+        borderColor: '#55A6FD',
+        transform: [{rotate:'-60deg'}],
+        borderRadius: 10,
+        padding: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    TransferIcon: {
+        padding: 0,
+        margin: 0,
+        marginLeft: -1
     },
     HeaderBtn: {
         flex: 0.6,
