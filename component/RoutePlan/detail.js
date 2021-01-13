@@ -21,6 +21,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import {MapView} from "react-native-amap3d";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import Ionicons from "react-native-vector-icons/Ionicons"
 import {Actions} from "react-native-router-flux";
 
 const {StatusBarManager} = NativeModules;
@@ -57,7 +58,6 @@ export default class EventsExample extends Component {
             lines: [...this.props.Polyline],
             RouteMsg: this.props.RouteMsg
         })
-        console.log(this.props.RouteMsg)
         await PermissionsAndroid.requestMultiple([
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
@@ -182,9 +182,15 @@ export default class EventsExample extends Component {
         this.out()
     }
     // 动态样式
-    handleBackStyle = (index) => {
-        const styles = ['#148E9B','#0C6196','#CECECE']
+    handleBackStyle = (index,item) => {
+        if (item.bus.buslines.length === 0) return {backgroundColor: '#CECECE'}
+        const styles = ['#148E9B','#0C6196','#148E9B']
         return {backgroundColor: styles[index%3]}
+    }
+    handlerPolyColor = (item, index) => {
+        if (item.type === 'walking') return '#FFC936'
+        const styles = ['#0B7CC3','#1CBBCC','#0B7CC3']
+        return styles[index%3]
     }
     render() {
         let statusBarHeight;
@@ -202,13 +208,13 @@ export default class EventsExample extends Component {
                 <StatusBar
                     animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden 
 
-                    hidden={false}  //是否隐藏状态栏。 
+                    hidden={true}  //是否隐藏状态栏。 
 
-                    backgroundColor={'rgba(0, 41, 84, 1.000)'} //状态栏的背景色 
+                    backgroundColor={'rgba(0, 0, 0, 0)'} //状态栏的背景色 
 
                     translucent={true}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。 
-
-                    barStyle={'light-content'}/>
+                    barStyle={'dark-content'}
+                    />
                 {
                     this.state.lines.length > 0 && <View style={styles.RouteDetail}>
                         <MapView
@@ -222,50 +228,89 @@ export default class EventsExample extends Component {
                             showsTraffic={true}
                             zoomLevel={14}
                             center={{
-                                latitude: this.state.lines[0].latitude || null,
-                                longitude: this.state.lines[0].longitude || null
+                                latitude: this.state.lines[0].Polyline[0].latitude || null,
+                                longitude: this.state.lines[0].Polyline[0].longitude || null
                             }}
                             onLocation={this._logLocationEvent}
                             coordinate={{
-                                latitude: this.state.lines[0].latitude || null,
-                                longitude: this.state.lines[0].longitude || null
+                                latitude: this.state.lines[0].Polyline[0].latitude || null,
+                                longitude: this.state.lines[0].Polyline[0].longitude || null
                             }}
                         >
-                            <MapView.Polyline
-                                width={10}
-                                color="rgba(0, 120, 198, 1.000)"
-                                coordinates={this.state.lines}
-                            />
                             {
-                                this.state.lines && this.state.lines[0] && <MapView.Marker
-                                    draggable
-                                    title='起点'
-                                    icon={() =>
-                                        <View style={styles.MarkerStart}>
-                                            <MaterialCommunityIcons name='near-me' size={24}
-                                                                    color='rgba(0, 157, 250, 1.000)'/>
-                                        </View>
-                                    }
-                                    coordinate={{
-                                        latitude: this.state.lines[0].latitude || null,
-                                        longitude: this.state.lines[0].longitude || null
-                                    }}
-                                />
+                                this.state.lines.map((lines, linesIndex) => {
+                                    return (
+                                        <MapView.Polyline
+                                            key={linesIndex}
+                                            width={10}
+                                            color= {this.handlerPolyColor(lines,linesIndex)}
+                                            coordinates={lines.Polyline}
+                                        />
+                                    )
+                                })
                             }
                             {
-                                this.state.lines && this.state.lines[0] && <MapView.Marker
-                                    draggable
-                                    title='终点'
-                                    icon={() =>
-                                        <View style={styles.MarkerStart}>
-                                            <Text style={styles.MarkerText}>终</Text>
-                                        </View>
+                                this.state.lines &&
+                                this.state.lines[0] &&
+                                this.state.lines.map( (lines , linesIndex) => {
+                                    if (linesIndex === 0) {
+                                        return (
+                                            <MapView.Marker
+                                                draggable
+                                                title='起点'
+                                                icon={() =>
+                                                    <View style={styles.MarkerStart}>
+                                                        <MaterialCommunityIcons
+                                                            name='near-me'
+                                                            size={24}
+                                                            color='rgba(0, 157, 250, 1.000)'
+                                                        />
+                                                    </View>
+                                                }
+                                                coordinate={{
+                                                    latitude: lines.Polyline[0].latitude || null,
+                                                    longitude: lines.Polyline[0].longitude || null
+                                                }}
+                                            />
+                                        )
+                                    } else if (linesIndex === this.state.lines.length - 1) {
+                                        return (
+                                            <MapView.Marker
+                                                draggable
+                                                title='终点'
+                                                icon={() =>
+                                                    <View style={styles.MarkerStart}>
+                                                        <Text style={styles.MarkerText}>终</Text>
+                                                    </View>
+                                                }
+                                                coordinate={{
+                                                    latitude: lines.Polyline[lines.Polyline.length-1].latitude || null,
+                                                    longitude: lines.Polyline[lines.Polyline.length-1].longitude || null
+                                                }}
+                                            />
+                                        )
+                                    } else {
+                                        return (
+                                            <MapView.Marker
+                                                draggable
+                                                title='换乘'
+                                                icon={() =>
+                                                    <View style={styles.MarkerCenter}>
+                                                        <Ionicons
+                                                            name='ios-sync'
+                                                            size={16}
+                                                            color='#1CBBCC'
+                                                        />
+                                                    </View>
+                                                }
+                                                coordinate={{
+                                                    latitude: lines.Polyline[0].latitude || null,
+                                                    longitude: lines.Polyline[0].longitude || null
+                                                }}
+                                            />
+                                        )
                                     }
-                                    coordinate={{
-                                        latitude: this.state.lines[this.state.lines.length - 1].latitude || null,
-                                        longitude: this.state.lines[this.state.lines.length - 1].longitude || null
-                                    }}
-                                />
+                                })
                             }
                         </MapView>
                         <View style={styles.MsgBox}>
@@ -285,7 +330,7 @@ export default class EventsExample extends Component {
                                                 stepindex < 5 &&
                                                 <View style={[styles.PointListItemCenterBox]} key={stepindex}>
                                                     <View
-                                                        style={[styles.MsgBoxCenterItem,this.handleBackStyle(stepindex)]}>
+                                                        style={[styles.MsgBoxCenterItem,this.handleBackStyle(stepindex,step)]}>
                                                         {
                                                             step.bus.buslines.length > 0 ?
                                                                 <Text
@@ -372,9 +417,9 @@ export default class EventsExample extends Component {
                                                 stepindex < 5 &&
                                                 <View style={styles.PointListItemCenterBox} key={stepindex}>
                                                     <View
-                                                        style={[styles.MsgBoxCenterItem,this.handleBackStyle(stepindex)]}>
+                                                        style={[styles.MsgBoxCenterItem,this.handleBackStyle(stepindex,step)]}>
                                                         {
-                                                            step.bus.buslines.length > 0 ?
+                                                            step.bus && step.bus.buslines.length > 0 ?
                                                                 <Text
                                                                     style={styles.MsgBoxCenterItemText}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
                                                                 <Text
@@ -565,7 +610,6 @@ const styles = StyleSheet.create({
         paddingLeft: deviceWidth * 0.04,
         paddingRight: deviceWidth * 0.04,
         paddingBottom: deviceWidth * 0.02
-        // height:deviceWidth*0.3
     },
     MsgBoxContentHead: {
         flexDirection: 'row',
@@ -836,6 +880,14 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26,
         borderRadius: 13,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    MarkerCenter: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'

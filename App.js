@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 41, 84, 1.000)',
     shadowOpacity: 1,
     shadowRadius: 3,
-    paddingTop: 2,
   },
 });
 
@@ -112,7 +111,7 @@ const Example = () => (
                 <Scene key="needhelp" component={Sos} />
               </Stack>
               <Stack
-                back
+                // back={true}
                 backTitle="Back"
                 key="routeplan"
                 backButtonTintColor="#fff"

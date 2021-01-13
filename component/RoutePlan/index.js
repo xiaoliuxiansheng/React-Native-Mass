@@ -73,14 +73,19 @@ export default class index extends Component {
 
                     hidden={false}  //是否隐藏状态栏。 
 
-                    backgroundColor={'rgba(0, 41, 84, 1.000)'} //状态栏的背景色 
+                    backgroundColor={'rgba(0, 0, 0, 0)'} //状态栏的背景色 
 
-                    translucent={true}//指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。 
+                    translucent //指定状态栏是否透明。设置为true时，应用会在状态栏之下绘制（即所谓“沉浸式”——被状态栏遮住一部分）。常和带有半透明背景色的状态栏搭配使用。 
 
                     barStyle={'light-content'}/>
                 <Provider>
                     <View style={styles.Content}>
                         <View style={styles.Header}>
+                            <TouchableWithoutFeedback onPress={() => Actions.pop()}>
+                                <View style={[styles.HeaderBtn,{alignItems:'flex-start',justifyContent: 'flex-start',paddingTop: 10}]}>
+                                    <AntDesign name='left' color='#fff' size={22} />
+                                </View>
+                            </TouchableWithoutFeedback>
                             <View style={styles.HeaderBox}>
                                 <View style={styles.HeaderLeft}>
                                     <View style={styles.HeaderLeftOne}></View>
@@ -103,9 +108,9 @@ export default class index extends Component {
                                     </View>
                                 </View>
                                 </View>
-                                <View style={styles.HeaderBtn}>
-                                    <FontAwesome5 name='location-arrow' color='#fff' size={22}></FontAwesome5>
-                                </View>
+                            <View style={styles.HeaderBtn}>
+                                <FontAwesome5 name='location-arrow' color='#fff' size={22}></FontAwesome5>
+                            </View>
                         </View>
                         <View style={styles.Times}>
                             <Ionicons name='time-sharp' size={14} color='rgba(0, 152, 110, 1.000)'></Ionicons>
@@ -140,13 +145,13 @@ export default class index extends Component {
                                                                             <View style={styles.PointListItemCenterBox}
                                                                                   key={stepindex}>
                                                                                 <View
-                                                                                    style={[styles.PointListItemCenterBoxStep,this.handleBackStyle(stepindex)]}>
+                                                                                    style={[styles.PointListItemCenterBoxStep,this.handleBackStyle(stepindex,step)]}>
                                                                                     {
                                                                                         step.bus.buslines.length > 0 ?
                                                                                             <Text
-                                                                                                style={[styles.PointListItemCenterText,this.handleFontColor(stepindex)]}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
+                                                                                                style={[styles.PointListItemCenterText,this.handleFontColor(stepindex,step)]}>{this.handleBuslinesName(step.bus.buslines[0].name)}</Text> :
                                                                                             <Text
-                                                                                                style={[styles.PointListItemCenterText,this.handleFontColor(stepindex)]}>步行</Text>
+                                                                                                style={[styles.PointListItemCenterText,this.handleFontColor(stepindex,step)]}>步行</Text>
                                                                                     }
                                                                                 </View>
                                                                                 {
@@ -228,13 +233,15 @@ export default class index extends Component {
         )
     }
     // 动态背景样式
-    handleBackStyle = (index) => {
-        const styles = [{backgroundColor:'#fff',borderWidth:1, borderColor:'#55A6FD'},{backgroundColor:'#148E9B'},{backgroundColor:'#0C6196'}]
+    handleBackStyle = (index,item) => {
+        if (item.bus.buslines.length === 0) return {backgroundColor:'#fff',borderWidth:1, borderColor:'#55A6FD'}
+        const styles = [{backgroundColor:'#148E9B'},{backgroundColor:'#0C6196'}]
         return styles[index%3]
     }
     // 动态字体样式
-    handleFontColor = (index) => {
-        const styles = [{color:'#55A6FD'},{color:'#fff'},{color:'#fff'}]
+    handleFontColor = (index,item) => {
+        if (item.bus.buslines.length === 0) return {color:'#55A6FD'}
+        const styles = [{color:'#fff'},{color:'#fff'}]
         return styles[index%3]
     }
     // 地图规划 时间 秒转时分秒
@@ -282,30 +289,46 @@ export default class index extends Component {
     // 处理路径规划 提取每个步骤的经纬度
     handleCountRoute = (data) => {
         let Polyline = []
+        console.log(data)
         data.segments.forEach((item) => {
             if (item.walking && item.walking.steps) {
+                let msg = {
+                    type: 'walking',
+                    Polyline:[]
+                }
                 item.walking.steps.forEach((step) => {
                     let stepary = step.polyline.split(';')
                     stepary.forEach((xx) => {
                         let xxarr = xx.split(',')
-                        Polyline = [...Polyline, {latitude: Number(xxarr[1]), longitude: Number(xxarr[0])}]
+                        msg.Polyline.push({latitude: Number(xxarr[1]), longitude: Number(xxarr[0])})
                     })
                 })
+                Polyline = [...Polyline,msg]
             }
             if (item.bus && item.bus.buslines && item.bus.buslines.length > 0) {
                 if (item.bus.buslines[0].type === '普通公交线路') {
+                    let msg = {
+                        type: 'bus',
+                        Polyline: []
+                    }
                     let stepary = item.bus.buslines[0].polyline.split(';')
                     stepary.forEach((xx) => {
                         let xxarr = xx.split(',')
-                        Polyline = [...Polyline, {latitude: Number(xxarr[1]), longitude: Number(xxarr[0])}]
+                        msg.Polyline.push({latitude: Number(xxarr[1]), longitude: Number(xxarr[0])})
                     })
+                    Polyline = [...Polyline, msg]
                 } else {
                     item.bus.buslines.forEach((step) => {
+                        let msg = {
+                            type: 'train',
+                            Polyline: []
+                        }
                         let stepary = step.polyline.split(';')
                         stepary.forEach((xx) => {
                             let xxarr = xx.split(',')
-                            Polyline = [...Polyline, {latitude: Number(xxarr[1]), longitude: Number(xxarr[0])}]
+                            msg.Polyline.push({latitude: Number(xxarr[1]), longitude: Number(xxarr[0])})
                         })
+                        Polyline = [...Polyline, msg]
                     })
                 }
             }
@@ -361,7 +384,7 @@ export default class index extends Component {
 }
 const styles = StyleSheet.create({
     Content: {
-        paddingTop: deviceWidth * 0.11,
+        paddingTop: deviceWidth * 0.12,
         paddingLeft: deviceWidth * 0.03,
         paddingRight: deviceWidth * 0.03
     },
@@ -371,11 +394,13 @@ const styles = StyleSheet.create({
         height: deviceWidth * 0.2
     },
     HeaderBox: {
-        flex: 6,
+        flex: 5.8,
         backgroundColor: '#fff',
         borderRadius: deviceWidth * 0.02,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        // paddingLeft: -30,
+        // paddingRight: -50
     },
     HeaderLeft: {
         flex: 1,
