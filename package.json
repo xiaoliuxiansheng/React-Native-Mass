@@ -8,8 +8,10 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "android:clean": "cd android && ./gradlew clean",
+    "release:app": "cd android && ./gradlew assembleRelease",
     "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
-    "bundle-android": "node node_modules/react-native/local-cli/cli.js bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/"
+    "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js  --bundle-output android/app/src/main/assets/index.android.bundle  --assets-dest android/app/src/main/res/"
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^2.2.1",
